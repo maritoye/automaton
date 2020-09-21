@@ -19,7 +19,7 @@ class Person:
     exposure = 0
     follow_protocol = 0
     quarantine = 0
-    state = states[0]
+    state = 0#states[0]
 
     def __init__(self):
         pass
@@ -35,8 +35,10 @@ class Person:
         # TODO: increase follow_protocol depending on age
         self.follow_protocol = random.uniform(0, 1)
         self.quarantine = 0
-        chance_of_inf = 0.01
-        self.state = states[1] if random.uniform(0, 1) < chance_of_inf else states[0]
+
+        chance_of_inf = p
+        #self.state = states[1] if random.uniform(0, 1) < chance_of_inf else states[0]
+        self.state = 1 if random.uniform(0, 1) < chance_of_inf else 0
 
 
     def set_age(self):
@@ -69,36 +71,36 @@ class Person:
 
 
 def initialize():
-    global todayPersons, nextDayPersons
+    global todayPersons, nextDayPersons, foo, nextfoo
 
-    todayPersons = np.full((n,n), Person())
-    for person in persons:
-        p in person:
-        p.set_values()
-    nextDayPersons = np.full((n,n), Person())
-
-    todayPersons = zeros([n, n])
-    for x in range(n):
-        for y in range(n):
-            todayPersons[x, y] = 1 if random.uniform(0, 1) < p else 0
-    nextDayPersons = zeros([n, n])
+    todayPersons = np.full((n, n), Person())
+    foo = np.full((n, n), 0)
+    for i, persons in enumerate(todayPersons):
+        for j, person in enumerate(persons):
+            person.set_values()
+            foo[i,j] = person.state
+    nextDayPersons = np.full((n, n), Person())
+    nextfoo = np.full((n, n), 0)
 
 
 def observe():
-    global todayPersons, nextDayPersons
+    global todayPersons, nextDayPersons, foo
     cla()
-    imshow(todayPersons, vmin = 0, vmax = 1, cmap = cm.binary)
+    imshow(foo, vmin = 0, vmax = 1, cmap = cm.binary)
 
 
 def update():
-    global todayPersons, nextDayPersons
+    global todayPersons, nextDayPersons, foo, nextfoo
     for x in range(n):
         for y in range(n):
             count = 0
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
-                    count += todayPersons[(x + dx) % n, (y + dy) % n]
-            nextDayPersons[x, y] = 1 if count >= 4 else 0
+                    count += foo[(x + dx) % n, (y + dy) % n]
+            nextDayPersons[x][y].state = 1 if count >= 4 else 0
+            nextfoo[x][y] = nextDayPersons[x][y].state
     todayPersons, nextDayPersons = nextDayPersons, todayPersons
+    foo, nextfoo = nextfoo, foo
 
-#pycxsimulator.GUI().start(func=[initialize, observe, update])
+
+pycxsimulator.GUI().start(func=[initialize, observe, update])
