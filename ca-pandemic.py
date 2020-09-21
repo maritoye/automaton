@@ -14,7 +14,18 @@ states = ['healthy', 'infected', 'sick', 'recovered', 'dead']
 
 
 class Person:
+    age = 0
+    background_sickness = 0
+    exposure = 0
+    follow_protocol = 0
+    quarantine = 0
+    state = states[0]
+
     def __init__(self):
+        pass
+
+
+    def set_values(self):
         self.age = self.set_age()
         # TODO: increase bs when older age
         chance_of_bs = 0.10
@@ -57,34 +68,37 @@ class Person:
         print('State =', self.state)
 
 
-p1 = Person()
-p1.print_self()
-
-
 def initialize():
-    global config, nextconfig
-    config = zeros([n, n])
+    global todayPersons, nextDayPersons
+
+    todayPersons = np.full((n,n), Person())
+    for person in persons:
+        p in person:
+        p.set_values()
+    nextDayPersons = np.full((n,n), Person())
+
+    todayPersons = zeros([n, n])
     for x in range(n):
         for y in range(n):
-            config[x, y] = 1 if random() < p else 0
-    nextconfig = zeros([n, n])
+            todayPersons[x, y] = 1 if random.uniform(0, 1) < p else 0
+    nextDayPersons = zeros([n, n])
 
 
 def observe():
-    global config, nextconfig
+    global todayPersons, nextDayPersons
     cla()
-    imshow(config, vmin = 0, vmax = 1, cmap = cm.binary)
+    imshow(todayPersons, vmin = 0, vmax = 1, cmap = cm.binary)
 
 
 def update():
-    global config, nextconfig
+    global todayPersons, nextDayPersons
     for x in range(n):
         for y in range(n):
             count = 0
             for dx in [-1, 0, 1]:
                 for dy in [-1, 0, 1]:
-                    count += config[(x + dx) % n, (y + dy) % n]
-            nextconfig[x, y] = 1 if count >= 4 else 0
-    config, nextconfig = nextconfig, config
+                    count += todayPersons[(x + dx) % n, (y + dy) % n]
+            nextDayPersons[x, y] = 1 if count >= 4 else 0
+    todayPersons, nextDayPersons = nextDayPersons, todayPersons
 
 #pycxsimulator.GUI().start(func=[initialize, observe, update])
