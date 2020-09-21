@@ -2,7 +2,7 @@ import pycxsimulator
 from pylab import *
 import numpy as np
 
-n = 100  # size of space: n x n
+n = 1000  # size of space: n x n
 p = 0.24  # probability of initially panicky individuals
 
 
