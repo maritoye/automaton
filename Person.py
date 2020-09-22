@@ -1,16 +1,12 @@
-import pycxsimulator
-from pylab import *
+from PersonState import PersonState
 import pandas as pd
-import numpy as np
 import random
-from enum import Enum
 
-n = 100 # size of space: n x n
-p = 0.24 # probability of initially panicky individuals
+n = 10
+p = 0.1
 
 df = pd.read_csv('population2020.csv')
 age_array = df.values
-states = ['healthy', 'infected', 'sick', 'recovered', 'dead']
 
 
 class Person:
@@ -19,7 +15,8 @@ class Person:
     exposure = 0
     follow_protocol = 0
     quarantine = 0
-    state = 0#states[0]
+    state = PersonState.EMPTY
+    state_count = 0
 
     def __init__(self):
         pass
@@ -38,7 +35,8 @@ class Person:
 
         chance_of_inf = p
         #self.state = states[1] if random.uniform(0, 1) < chance_of_inf else states[0]
-        self.state = 1 if random.uniform(0, 1) < chance_of_inf else 0
+        self.state = PersonState.INFECTIOUS if random.uniform(0, 1) < chance_of_inf else PersonState.HEALTHY
+        self.state_count = 0
 
 
     def set_age(self):
@@ -68,39 +66,3 @@ class Person:
         print('Follow protocol =', self.follow_protocol)
         print('In quarantine =', self.quarantine)
         print('State =', self.state)
-
-
-def initialize():
-    global todayPersons, nextDayPersons, foo, nextfoo
-
-    todayPersons = np.full((n, n), Person())
-    foo = np.full((n, n), 0)
-    for i, persons in enumerate(todayPersons):
-        for j, person in enumerate(persons):
-            person.set_values()
-            foo[i,j] = person.state
-    nextDayPersons = np.full((n, n), Person())
-    nextfoo = np.full((n, n), 0)
-
-
-def observe():
-    global todayPersons, nextDayPersons, foo
-    cla()
-    imshow(foo, vmin = 0, vmax = 1, cmap = cm.binary)
-
-
-def update():
-    global todayPersons, nextDayPersons, foo, nextfoo
-    for x in range(n):
-        for y in range(n):
-            count = 0
-            for dx in [-1, 0, 1]:
-                for dy in [-1, 0, 1]:
-                    count += foo[(x + dx) % n, (y + dy) % n]
-            nextDayPersons[x][y].state = 1 if count >= 4 else 0
-            nextfoo[x][y] = nextDayPersons[x][y].state
-    todayPersons, nextDayPersons = nextDayPersons, todayPersons
-    foo, nextfoo = nextfoo, foo
-
-
-pycxsimulator.GUI().start(func=[initialize, observe, update])
