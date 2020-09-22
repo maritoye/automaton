@@ -17,6 +17,7 @@ class Person:
     quarantine = 0
     state = PersonState.EMPTY
     state_count = 0
+    vulnerability_ratio = 0
 
     def __init__(self):
         pass
@@ -51,11 +52,10 @@ class Person:
         """
         weight = []
         ages = []
-        for age_group in age_array:
-            weight.append(age_group[2])
-            ages.append([age_group[0], age_group[1]])
-        age_range = random.choices(ages, weights=weight, k=1)
-        age = random.randint(age_range[0][0], age_range[0][1])
+        for group in age_array:
+            weight.append(group[1])
+            ages.append(group[0])
+        age = int(random.choices(ages, weights=weight, k=1)[0])
         return age
 
 
