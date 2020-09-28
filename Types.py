@@ -25,16 +25,24 @@ class BackgroundSickness(Enum):
 
 
 class FollowProtocol(Enum):
-    NO = 0,
-    SLIGHTLY = 1,
+    STRICT = 0
+    ABOVE_AVERAGE = 1,
     MODERATE = 2,
-    ABOVE_AVERAGE = 3,
-    STRICT = 4
+    SLIGHTLY = 3,
+    NO = 4,
 
 
 class Quarantine(Enum):
     NO = 0,
-    Quarantine = 1,
+    QUARANTINE = 1,
     TOTAL_ISOLATION = 2,
 
 
+class AgeGroup(Enum):
+    INFANT = range(0, 3),
+    CHILD = range(3, 18),
+    YOUNG_ADULT = range(18, 30),
+    ADULT = range(30, 50),
+    MIDDLE_AGE = range(50, 70),
+    AGED = range(70, 90),
+    OLD = range(90, 110),
