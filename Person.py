@@ -1,8 +1,7 @@
-from PersonState import PersonState
+from Types import PersonState,Quarantine
 import pandas as pd
 import random
 
-n = 10
 p = 0.1
 
 df = pd.read_csv('population2020.csv')
@@ -17,14 +16,18 @@ class Person:
     quarantine = 0
     state = PersonState.EMPTY
     state_count = 0
+    gender = 0
     vulnerability_ratio = 0
+    incubation_period = 0
+    risk_ratio = 0
 
     def __init__(self):
         pass
 
 
-    def set_values(self):
+    def generate_random_values(self):
         self.age = self.set_age()
+        # self.gender =
         # TODO: increase bs when older age
         chance_of_bs = 0.10
         self.background_sickness = 1 if random.uniform(0, 1) < chance_of_bs else 0
@@ -57,6 +60,21 @@ class Person:
             ages.append(group[0])
         age = int(random.choices(ages, weights=weight, k=1)[0])
         return age
+
+
+    def get_vulnerability_ratio(self):
+        pass
+
+
+    def get_risk_ratio(self):
+        if self.person_state not in [PersonState.SICK,PersonState.INFECTIOUS]:
+            return 0
+        else:
+            if self.quarantine == Quarantine.TOTAL_ISOLATION:
+                return 0
+
+        pass
+
 
 
     def print_self(self):
