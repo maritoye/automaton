@@ -59,6 +59,19 @@ def get_age_group(age):
 
 
 def get_background_sickness(age):
+    """
+    Gets background sickness depending on age
+    Realistic background sickness
+    The probability from backgroun_sickness2019.csv is collected from
+        source: https://www.ssb.no/statbank/table/11190/tableViewLayout1/
+        date: 29.09.2020
+    ----------
+    Parameters:
+        age - int, the age of a paerson
+    ----------
+    Return:
+        BackgroundSickness.YES or NO - Enum, if the person should have a background sickness
+    """
     sickness = pd.read_csv('./background_sickness2019.csv').values
     if age in range(0, 16):
         return BackgroundSickness.NO
@@ -66,3 +79,4 @@ def get_background_sickness(age):
         if age in range(sickness[i][0], sickness[i][1]):
             return BackgroundSickness.YES if random.randint(0, 100) < sickness[i][2] else BackgroundSickness.NO
 
+# TODO calculate the follow protocol: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#html_fulltext
