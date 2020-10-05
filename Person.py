@@ -85,12 +85,10 @@ class Person:
         # page 24
         # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
         if self.background_sickness:
-            # sjanse er 1.2006% sjanse for å dø
-            death_ratio = #random(0.120006)
+            death_ratio = 0.0120006
 
         else:
-            # sjanse er 0,1794% sjanse for å dø
-            death_ratio =  # random(0.01794)
+            death_ratio = 0.001794
 
         return death_ratio
     
