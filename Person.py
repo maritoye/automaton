@@ -30,7 +30,7 @@ class Person:
         self.age = self.set_age()
         self.age_group = get_age_group(self.age)
         self.background_sickness = get_background_sickness(self.age)
-        self.exposure = random.randint(1, 3)
+        self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
 
         # TODO: increase follow_protocol depending on age
         self.follow_protocol = random.uniform(0, 1)
@@ -42,10 +42,9 @@ class Person:
         self.state = PersonState.INFECTIOUS if random.uniform(0, 1) < chance_of_inf else PersonState.HEALTHY
         self.state_count = 0
 
-    def get_vulnerability_ratio(self):
-        #risk of getting infection
-        
-        pass
+    def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
+        vulnerability_ratio = (mask + distancing + hygiene + curfew) / 4 * self.follow_protocol
+        return vulnerability_ratio
 
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
         # risk of infecting others
