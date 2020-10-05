@@ -3,7 +3,8 @@ import random
 from utils import *
 
 p = 0.1
-
+access_test_probability = .7 # When person finds out his/her sickness, it has more chance to isolate himself/herself
+access_medicine_probability = .5 # Chance of recovery goes higher
 
 class Person:
     age = 0
