@@ -84,7 +84,16 @@ class Person:
         # background_sickness, maybe age, lifestyle (smoking, weight), health care (respirator, medicines)
         # https://www.fhi.no/contentassets/8a971e7b0a3c4a06bdbf381ab52e6157/vedlegg/andre-halvar-2020/2020.09.23-ukerapport-uke-38-covid-19.pdf
         # page 24
-        pass
+        # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
+        if self.background_sickness:
+            # sjanse er 1.2006% sjanse for å dø
+            death_ratio = #random(0.120006)
+
+        else:
+            # sjanse er 0,1794% sjanse for å dø
+            death_ratio =  # random(0.01794)
+
+        return death_ratio
     
     def print_self(self):
         print('Age =', self.age)
