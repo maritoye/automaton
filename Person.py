@@ -63,26 +63,23 @@ class Person:
             elif self.quarantine == Quarantine.QUARANTINE:
             # how strict is the quarantine (can you go to stores, be with others)
             # how strictly do you follow protocols?
-                #if(self.follow_protocol == )
+                risk_ratio = self.follow_protocol
+                return risk_ratio
          
-        #if infected or sick but not in quarantine or isolation
-        else: 
-            protocols = (distancing + mask + hygiene)/3
-            # social distancing rules =
-            # face mask rules / recommendations
-            # + distancing (i.e one meter rule)    
-            # + hygiene rules 
-            
-            risk_ratio = protocols * self.follow_protocol
-            risk ratio = risk_ratio * self.exposure
-            # following protocols * social distancing rules
-            # + exposure??
-            # + staying at home rules (i.e portforbud) (can be part of the exposure variable??)
-            return risk_ratio
-            
+            #if infected or sick but not in quarantine or isolation
+            else:
+                protocols = (distancing + mask + hygiene)/3
+                # social distancing rules =
+                # face mask rules / recommendations
+                # + distancing (i.e one meter rule)
+                # + hygiene rules
 
-        pass
-    
+                risk_ratio = protocols * self.follow_protocol * self.exposure
+                # following protocols * social distancing rules
+                # + exposure??
+                # + staying at home rules (i.e portforbud) (can be part of the exposure variable??)
+                return risk_ratio
+                
     def get_death_ratio(self):
         # background_sickness, maybe age, lifestyle (smoking, weight), health care (respirator, medicines)
         # https://www.fhi.no/contentassets/8a971e7b0a3c4a06bdbf381ab52e6157/vedlegg/andre-halvar-2020/2020.09.23-ukerapport-uke-38-covid-19.pdf
