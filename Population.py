@@ -1,4 +1,5 @@
 from Person import Person
+import numpy as np
 
 class Population:
 	# changable
@@ -25,10 +26,11 @@ class Population:
 		self.curfew = curfew
 		self.test_rate = test_rate
 
-		self.persons = (["p"] * x for i in range(y))
-		for i in range(y):
-			for j in range(x):
-				self.persons[y][x] = Person
+		self.persons = np.ndarray((y, x), dtype=np.object)
+
+		for i in range(self.persons.shape[0]):
+			for j in range(self.persons.shape[1]):
+				self.persons[j][i] = Person()
 
 
 
