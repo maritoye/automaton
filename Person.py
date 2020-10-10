@@ -7,7 +7,7 @@ class Person:
     age = 0
     age_group = 0
     background_sickness = 0
-    exposure = 0  # How active one person is
+    exposure_radius = 0  # How active one person is
     follow_protocol = 0
     quarantine = 0
     state = PersonState.EMPTY
@@ -25,7 +25,7 @@ class Person:
         self.age_group = utils.get_age_group(self.age)
         self.background_sickness = utils.get_background_sickness(self.age)
         #self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
-        self.exposure = 1
+        self.exposure_radius = random.randint(1,3)
 
         # TODO: increase follow_protocol depending on age
         self.follow_protocol = random.uniform(0.5, 1)
@@ -38,11 +38,12 @@ class Person:
         self.recovery_period = random.randint(7, 28)
 
     def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
+        # risk of getting infected  0 no risk, 1 = highest risk
         vulnerability_ratio = (mask + distancing + hygiene + curfew) / 4
         return (1 - vulnerability_ratio) * self.follow_protocol
 
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
-        # risk of infecting others
+        # risk of infecting others 0 no risk, 1 = highest risk
         if self.state not in [PersonState.SICK, PersonState.INFECTIOUS]:
             return 0
         else:
@@ -55,9 +56,9 @@ class Person:
             # TODO or Not TODO? That is the question
             
             elif self.quarantine == Quarantine.QUARANTINE:
-            # how strict is the quarantine (can you go to stores, be with others)
+            # how strict is the quarantine? (can you go to stores, be with others)
             # how strictly do you follow protocols?
-                return self.follow_protocol
+                return 1 - (self.follow_protocol/2)
          
             #if infected or sick but not in quarantine or isolation
             else:
@@ -67,7 +68,7 @@ class Person:
                 # + distancing (i.e one meter rule)
                 # + hygiene rules
 
-                risk_ratio = 1-(protocols * self.exposure) * self.follow_protocol
+                risk_ratio = (1 - protocols) * (1 - self.follow_protocol)
                 # following protocols * social distancing rules
                 # + exposure??
                 # + staying at home rules (i.e portforbud) (can be part of the exposure variable??)
@@ -89,7 +90,7 @@ class Person:
     def print_self(self):
         print('Age =', self.age)
         print('bs =', self.background_sickness)
-        print('Exposure =', self.exposure)
+        print('Exposure =', self.exposure_radius)
         print('Follow protocol =', self.follow_protocol)
         print('In quarantine =', self.quarantine)
         print('State =', self.state)
