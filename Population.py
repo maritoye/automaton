@@ -39,7 +39,7 @@ class Population:
 
 		for i in range(self.persons.shape[0]):
 			for j in range(self.persons.shape[1]):
-				self.persons[j][i] = Person(chance_of_infection=0.05)
+				self.persons[j][i] = Person(chance_of_infection=0.005)
 
 	def run(self, step_list):
 		count = 0
@@ -56,7 +56,7 @@ class Population:
 			for x in range(self.persons.shape[1]):
 				# if person is healthy
 				if self.persons[y][x].state == PersonState.HEALTHY:
-					radius = self.persons[y][x].exposure
+					radius = self.persons[y][x].exposure_radius
 					vulnerability_ratio = self.persons[y][x].get_vulnerability_ratio(self.mask, self.distancing, self.hygiene, self.curfew)
 					for dy in range(-radius, radius + 1):
 						for dx in range(-radius, radius + 1):
