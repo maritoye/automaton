@@ -90,7 +90,7 @@ def get_adherence(age):
         age - int, the age of a person
     ----------
     Return:
-        float, the percentage of adherence
+        int - if the person follows protocol or not
     """
     if age in range(18, 30):
         return 1 if random.uniform(0, 1) < 0.90 else 0
@@ -114,7 +114,7 @@ def get_smoking(age):
         age - int, the age of a person
     ----------
     Return:
-        float, the percentage of smoking
+        int - if the person smokes or not
     """
     if age in range(0, 16):
         return 0
@@ -143,7 +143,7 @@ def get_obesity(age):
         age - int, the age of a person
     ----------
     Return:
-        float, the percentage of smoking
+        int - it the person is obese or not
     """
     if age in range(0, 16):
         return 0
