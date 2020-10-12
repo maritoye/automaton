@@ -95,4 +95,3 @@ class Population:
 
 	def get_statistics(self):
 		pass
-		# returns no_of_dead, no_of_recovered etc.

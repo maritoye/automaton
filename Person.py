@@ -1,3 +1,8 @@
+from PersonState import PersonState
+import pandas as pd
+import random
+
+n = 10
 from Types import PersonState, Quarantine, Gender
 import random
 import utils
@@ -13,7 +18,7 @@ class Person:
     state = PersonState.EMPTY
     gender = 0
     exposure_ratio = 0
-    vulnerability_ratio = 0 
+    vulnerability_ratio = 0
     death_ratio = 0
     incubation_period = 0  # 2-14 (3-5 har mye vekt) vanligvis ikke over 9
     recovery_period = 0
@@ -24,8 +29,8 @@ class Person:
         self.age = utils.set_age()
         self.age_group = utils.get_age_group(self.age)
         self.background_sickness = utils.get_background_sickness(self.age)
-        #self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
-        self.exposure_radius = random.randint(1,3)
+        # self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
+        self.exposure_radius = random.randint(1, 3)
 
         # TODO: increase follow_protocol depending on age
         self.follow_protocol = random.uniform(0.5, 1)
@@ -51,18 +56,18 @@ class Person:
                 # any chance of people breaking isolation?
                 # what about people you live with? are they also isolated, or quarantined
                 # in those cases they can be infected...
-                return 0 
-            
-            # TODO or Not TODO? That is the question
-            
+                return 0
+
+                # TODO or Not TODO? That is the question
+
             elif self.quarantine == Quarantine.QUARANTINE:
-            # how strict is the quarantine? (can you go to stores, be with others)
-            # how strictly do you follow protocols?
-                return 1 - (self.follow_protocol/2)
-         
-            #if infected or sick but not in quarantine or isolation
+                # how strict is the quarantine? (can you go to stores, be with others)
+                # how strictly do you follow protocols?
+                return 1 - (self.follow_protocol / 2)
+
+            # if infected or sick but not in quarantine or isolation
             else:
-                protocols = (distancing + mask + hygiene)/3
+                protocols = (distancing + mask + hygiene) / 3
                 # social distancing rules =
                 # face mask rules / recommendations
                 # + distancing (i.e one meter rule)
@@ -73,7 +78,7 @@ class Person:
                 # + exposure??
                 # + staying at home rules (i.e portforbud) (can be part of the exposure variable??)
                 return risk_ratio
-                
+
     def get_death_ratio(self):
         # background_sickness, maybe age, lifestyle (smoking, weight), health care (respirator, medicines)
         # https://www.fhi.no/contentassets/8a971e7b0a3c4a06bdbf381ab52e6157/vedlegg/andre-halvar-2020/2020.09.23-ukerapport-uke-38-covid-19.pdf
@@ -86,7 +91,7 @@ class Person:
             death_ratio = 0.001794
 
         return death_ratio
-    
+
     def print_self(self):
         print('Age =', self.age)
         print('bs =', self.background_sickness)

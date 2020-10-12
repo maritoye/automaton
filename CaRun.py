@@ -11,4 +11,8 @@ class CaRun:
         observe()
         while True:
             update()
+<<<<<<< HEAD
             observe()
+=======
+            observe()
+>>>>>>> ab40d5258c170204726d561dd9af20b3496b4c5c

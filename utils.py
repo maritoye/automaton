@@ -62,12 +62,12 @@ def get_background_sickness(age):
     """
     Gets background sickness depending on age
     Realistic background sickness
-    The probability from backgroun_sickness2019.csv is collected from
+    The probability from background_sickness2019.csv is collected from
         source: https://www.ssb.no/statbank/table/11190/tableViewLayout1/
         date: 29.09.2020
     ----------
     Parameters:
-        age - int, the age of a paerson
+        age - int, the age of a person
     ----------
     Return:
         BackgroundSickness.YES or NO - Enum, if the person should have a background sickness
@@ -79,4 +79,25 @@ def get_background_sickness(age):
         if age in range(sickness[i][0], sickness[i][1]):
             return BackgroundSickness.YES if random.randint(0, 100) < sickness[i][2] else BackgroundSickness.NO
 
-# TODO calculate the follow protocol: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#html_fulltext
+def get_adherence(age):
+    """
+    Gets the adherence depending on age
+    source: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#figuresntables
+        date: 12.10.2020
+    ----------
+    Parameters:
+        age - int, the age of a person
+    ----------
+    Return:
+        float, the percentage of adherence
+    """
+    if age in range(18, 30):
+        return 0.90
+    elif age in range(30, 50):
+        return 0.40
+    elif age in range(50, 70):
+        return 0.10
+    elif age in range(70, 90):
+        return 0.15
+    else:
+        return 1
