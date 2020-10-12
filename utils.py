@@ -79,7 +79,6 @@ def get_background_sickness(age):
         if age in range(sickness[i][0], sickness[i][1]):
             return BackgroundSickness.YES if random.randint(0, 100) < sickness[i][2] else BackgroundSickness.NO
 
-
 def get_adherence(age):
     """
     Gets the adherence depending on age
@@ -90,70 +89,15 @@ def get_adherence(age):
         age - int, the age of a person
     ----------
     Return:
-        int - if the person follows protocol or not
+        float, the percentage of adherence
     """
     if age in range(18, 30):
-        return 1 if random.uniform(0, 1) < 0.90 else 0
+        return 0.90
     elif age in range(30, 50):
-        return 1 if random.uniform(0, 1) < 0.40 else 0
+        return 0.40
     elif age in range(50, 70):
-        return 1 if random.uniform(0, 1) < 0.10 else 0
+        return 0.10
     elif age in range(70, 90):
-        return 1 if random.uniform(0, 1) < 0.15 else 0
+        return 0.15
     else:
         return 1
-
-
-def get_smoking(age):
-    """
-    Gets the smoking depending on age
-    source: https://www.ssb.no/statbank/table/05307/tableViewLayout1/
-    date: 12.10.2020
-    ----------
-    Parameters:
-        age - int, the age of a person
-    ----------
-    Return:
-        int - if the person smokes or not
-    """
-    if age in range(0, 16):
-        return 0
-    elif age in range(16, 25):
-        return 1 if random.uniform(0, 1) < 0.02 else 0
-    elif age in range(25, 35):
-        return 1 if random.uniform(0, 1) < 0.04 else 0
-    elif age in range(35, 45):
-        return 1 if random.uniform(0, 1) < 0.10 else 0
-    elif age in range(45, 55):
-        return 1 if random.uniform(0, 1) < 0.12 else 0
-    elif age in range(55, 65):
-        return 1 if random.uniform(0, 1) < 0.13 else 0
-    else:
-        return 1 if random.uniform(0, 1) < 0.12 else 0
-
-
-def get_obesity(age):
-    """
-    Gets the obesity depending on age
-    The first value is bmi 30-35, second value bmi > 35
-    source: https://www.ssb.no/statbank/table/06181/tableViewLayout1/
-    date: 12.10.2020
-    ----------
-    Parameters:
-        age - int, the age of a person
-    ----------
-    Return:
-        int - it the person is obese or not
-    """
-    if age in range(0, 16):
-        return 0
-    elif age in range(16, 25):
-        return 1 if random.uniform(0, 1) < 0.06 + 0.01 else 0
-    elif age in range(25, 45):
-        return 1 if random.uniform(0, 1) < 0.13 + 0.03 else 0
-    elif age in range(45, 67):
-        return 1 if random.uniform(0, 1) < 0.17 + 0.04 else 0
-    elif age in range(67, 80):
-        return 1 if random.uniform(0, 1) < 0.15 + 0.02 else 0
-    else:
-        return 1 if random.uniform(0, 1) < 0.09 + 0.01 else 0
