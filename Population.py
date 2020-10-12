@@ -17,8 +17,8 @@ class Population:
 	distancing = 0
 	curfew = 0
 	test_rate = 0
-	# TODO quarantene rules
-	# TODO isolation rules
+	# TODO quarantene rules (f.eks 0 = none, 1 = sick people, 2 = infectious people, 3 = contacts/neighbors og sick or infectious people, 4 = all)
+	# TODO isolation rules (f.eks 0 = none, 1 = sick people, 2 = infectious people, 3 = contacts/neighbors og sick or infectious people, 4 = all)
 
 	# non-changable
 	healthcare = 0 # access to medications and respirators
@@ -65,13 +65,17 @@ class Population:
 							risk_ratio = self.persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]].get_risk_ratio(self.mask, self.distancing, self.hygiene, self.curfew)
 							if random.uniform(0, 1) <= risk_ratio * vulnerability_ratio:
 								next_persons[y][x].state = PersonState.INFECTIOUS
+
 				# if person is infectious
 				elif self.persons[y][x].state == PersonState.INFECTIOUS:
+					#TODO decide if person is to be quarantened (or isolated)(by rules from input)
 					next_persons[y][x].incubation_period -= 1
 					if next_persons[y][x].incubation_period == 0:
 						next_persons[y][x].state = PersonState.SICK
+
 				# if person is sick
 				elif self.persons[y][x].state == PersonState.SICK:
+					#TODO decide if person is to be quarantened or isolated (by rules from input)
 					next_persons[y][x].recovery_period -= 1
 					if next_persons[y][x].recovery_period == 0:
 						if random.uniform(0,1) <= self.persons[y][x].get_death_ratio():
