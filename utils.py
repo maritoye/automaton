@@ -62,12 +62,12 @@ def get_background_sickness(age):
     """
     Gets background sickness depending on age
     Realistic background sickness
-    The probability from backgroun_sickness2019.csv is collected from
+    The probability from background_sickness2019.csv is collected from
         source: https://www.ssb.no/statbank/table/11190/tableViewLayout1/
         date: 29.09.2020
     ----------
     Parameters:
-        age - int, the age of a paerson
+        age - int, the age of a person
     ----------
     Return:
         BackgroundSickness.YES or NO - Enum, if the person should have a background sickness
@@ -79,4 +79,81 @@ def get_background_sickness(age):
         if age in range(sickness[i][0], sickness[i][1]):
             return BackgroundSickness.YES if random.randint(0, 100) < sickness[i][2] else BackgroundSickness.NO
 
-# TODO calculate the follow protocol: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#html_fulltext
+
+def get_adherence(age):
+    """
+    Gets the adherence depending on age
+    source: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#figuresntables
+        date: 12.10.2020
+    ----------
+    Parameters:
+        age - int, the age of a person
+    ----------
+    Return:
+        int - if the person follows protocol or not
+    """
+    if age in range(18, 30):
+        return 1 if random.uniform(0, 1) < 0.90 else 0
+    elif age in range(30, 50):
+        return 1 if random.uniform(0, 1) < 0.40 else 0
+    elif age in range(50, 70):
+        return 1 if random.uniform(0, 1) < 0.10 else 0
+    elif age in range(70, 90):
+        return 1 if random.uniform(0, 1) < 0.15 else 0
+    else:
+        return 1
+
+
+def get_smoking(age):
+    """
+    Gets the smoking depending on age
+    source: https://www.ssb.no/statbank/table/05307/tableViewLayout1/
+    date: 12.10.2020
+    ----------
+    Parameters:
+        age - int, the age of a person
+    ----------
+    Return:
+        int - if the person smokes or not
+    """
+    if age in range(0, 16):
+        return 0
+    elif age in range(16, 25):
+        return 1 if random.uniform(0, 1) < 0.02 else 0
+    elif age in range(25, 35):
+        return 1 if random.uniform(0, 1) < 0.04 else 0
+    elif age in range(35, 45):
+        return 1 if random.uniform(0, 1) < 0.10 else 0
+    elif age in range(45, 55):
+        return 1 if random.uniform(0, 1) < 0.12 else 0
+    elif age in range(55, 65):
+        return 1 if random.uniform(0, 1) < 0.13 else 0
+    else:
+        return 1 if random.uniform(0, 1) < 0.12 else 0
+
+
+def get_obesity(age):
+    """
+    Gets the obesity depending on age
+    The first value is bmi 30-35, second value bmi > 35
+    source: https://www.ssb.no/statbank/table/06181/tableViewLayout1/
+    date: 12.10.2020
+    ----------
+    Parameters:
+        age - int, the age of a person
+    ----------
+    Return:
+        int - it the person is obese or not
+    """
+    if age in range(0, 16):
+        return 0
+    elif age in range(16, 25):
+        return 1 if random.uniform(0, 1) < 0.06 + 0.01 else 0
+    elif age in range(25, 45):
+        return 1 if random.uniform(0, 1) < 0.13 + 0.03 else 0
+    elif age in range(45, 67):
+        return 1 if random.uniform(0, 1) < 0.17 + 0.04 else 0
+    elif age in range(67, 80):
+        return 1 if random.uniform(0, 1) < 0.15 + 0.02 else 0
+    else:
+        return 1 if random.uniform(0, 1) < 0.09 + 0.01 else 0
