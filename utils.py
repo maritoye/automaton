@@ -79,8 +79,6 @@ def get_background_sickness(age):
         if age in range(sickness[i][0], sickness[i][1]):
             return BackgroundSickness.YES if random.randint(0, 100) < sickness[i][2] else BackgroundSickness.NO
 
-# TODO calculate the follow protocol: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#html_fulltext
-
 
 def get_adherence(age):
     """
