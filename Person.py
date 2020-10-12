@@ -1,4 +1,3 @@
-from PersonState import PersonState
 import pandas as pd
 import random
 
