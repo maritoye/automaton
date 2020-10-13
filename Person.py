@@ -29,10 +29,12 @@ class Person:
         self.age_group = utils.get_age_group(self.age)
         self.background_sickness = utils.get_background_sickness(self.age)
         # self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
-        self.exposure_radius = random.randint(1, 3)
+        self.exposure_radius = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
 
         # TODO: increase follow_protocol depending on age
-        self.follow_protocol = random.uniform(0.5, 1)
+        self.follow_protocol = utils.get_adherence(self.age)
+        self.smoking = utils.get_smoking(self.age)
+        self.bmi = utils.get_obesity(self.age)
         self.quarantine = 0
         self.gender = Gender.FEMALE if random.random() < 0.5 else Gender.MALE
 
@@ -84,12 +86,13 @@ class Person:
         # page 24
         # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
         if self.background_sickness:
-            self.death_ratio = 0.0120006
+            death_ratio = 0.0120006
+            #TODO adjust by age
 
         else:
-            self.death_ratio = 0.001794
+            death_ratio = 0.001794
 
-        return self.death_ratio
+        return death_ratio
 
     def print_self(self):
         print('Age =', self.age)
