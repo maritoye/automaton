@@ -98,4 +98,5 @@ class Population:
 
 
 	def get_statistics(self):
+		#TODO calculate how many people are infected, dead etc. after certain time steps
 		pass

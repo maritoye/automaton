@@ -85,6 +85,7 @@ class Person:
         # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
         if self.background_sickness:
             death_ratio = 0.0120006
+            #TODO adjust by age
 
         else:
             death_ratio = 0.001794
