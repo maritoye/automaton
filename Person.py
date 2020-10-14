@@ -85,11 +85,13 @@ class Person:
         # https://www.fhi.no/contentassets/8a971e7b0a3c4a06bdbf381ab52e6157/vedlegg/andre-halvar-2020/2020.09.23-ukerapport-uke-38-covid-19.pdf
         # page 24
         # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
+        # if the person is smoking, increase the chance of death by 5%
+        # if the person is overweight, increase the chance of death by 5%
         if self.background_sickness:
-            self.death_ratio = 0.0120006 * (0.01 * self.age)
+            self.death_ratio = 0.0120006 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
             # TODO adjust by age
         else:
-            self.death_ratio = 0.001794 * (0.01 * self.age)
+            self.death_ratio = 0.001794 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
 
         return self.death_ratio
 
