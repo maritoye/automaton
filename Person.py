@@ -86,13 +86,12 @@ class Person:
         # page 24
         # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
         if self.background_sickness:
-            death_ratio = 0.0120006
-            #TODO adjust by age
-
+            self.death_ratio = 0.0120006 * (0.01 * self.age)
+            # TODO adjust by age
         else:
-            death_ratio = 0.001794
+            self.death_ratio = 0.001794 * (0.01 * self.age)
 
-        return death_ratio
+        return self.death_ratio
 
     def print_self(self):
         print('Age =', self.age)
