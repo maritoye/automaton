@@ -90,16 +90,16 @@ def get_adherence(age):
         age - int, the age of a person
     ----------
     Return:
-        int - if the person follows protocol or not
+        float, the percentage of adherence
     """
     if age in range(18, 30):
-        return 1 if random.uniform(0, 1) < 0.90 else 0
+        return 0.90
     elif age in range(30, 50):
-        return 1 if random.uniform(0, 1) < 0.40 else 0
+        return 0.40
     elif age in range(50, 70):
-        return 1 if random.uniform(0, 1) < 0.10 else 0
+        return 0.10
     elif age in range(70, 90):
-        return 1 if random.uniform(0, 1) < 0.15 else 0
+        return 0.15
     else:
         return 1
 
