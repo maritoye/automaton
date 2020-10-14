@@ -17,13 +17,12 @@ class Population:
 	distancing = 0
 	curfew = 0
 	test_rate = 0
+
 	# TODO quarantene rules (f.eks 0 = none, 1 = sick people, 2 = infectious people, 3 = contacts/neighbors og sick or infectious people, 4 = all)
 	# TODO isolation rules (f.eks 0 = none, 1 = sick people, 2 = infectious people, 3 = contacts/neighbors og sick or infectious people, 4 = all)
 
 	# non-changable
 	healthcare = 0 # access to medications and respirators
-	# TODO smoking
-	# TODO bmi
 
 	persons = []
 
@@ -34,6 +33,8 @@ class Population:
 		self.distancing = distancing
 		self.curfew = curfew
 		self.test_rate = test_rate
+		#self.quarantine_rules = quarantine_rules
+		#self.isolation_rules = isolation_rules
 
 		self.persons = np.ndarray((y, x), dtype=np.object)
 
@@ -69,6 +70,8 @@ class Population:
 				# if person is infectious
 				elif self.persons[y][x].state == PersonState.INFECTIOUS:
 					#TODO decide if person is to be quarantened (or isolated)(by rules from input)
+					#This also has to do with test rate (if test rate is low they dont know who is infected
+
 					next_persons[y][x].incubation_period -= 1
 					if next_persons[y][x].incubation_period == 0:
 						next_persons[y][x].state = PersonState.SICK
@@ -76,6 +79,7 @@ class Population:
 				# if person is sick
 				elif self.persons[y][x].state == PersonState.SICK:
 					#TODO decide if person is to be quarantened or isolated (by rules from input)
+					#next_persons[y][x].quarantene ==
 					next_persons[y][x].recovery_period -= 1
 					if next_persons[y][x].recovery_period == 0:
 						if random.uniform(0,1) <= self.persons[y][x].get_death_ratio():
@@ -96,7 +100,6 @@ class Population:
 		plt.imshow(foo, vmin=0, vmax=5, cmap=cmap)
 		plt.show()
 
-
 	def get_statistics(self):
-		#TODO calculate how many people are infected, dead etc. after certain time steps
+		#TODO how many people are in each state
 		pass
