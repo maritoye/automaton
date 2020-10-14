@@ -79,6 +79,7 @@ def get_background_sickness(age):
         if age in range(sickness[i][0], sickness[i][1]):
             return BackgroundSickness.YES if random.randint(0, 100) < sickness[i][2] else BackgroundSickness.NO
 
+
 def get_adherence(age):
     """
     Gets the adherence depending on age
@@ -89,16 +90,16 @@ def get_adherence(age):
         age - int, the age of a person
     ----------
     Return:
-        int - if the person follows protocol or not
+        float, the percentage of adherence
     """
     if age in range(18, 30):
-        return 1 if random.uniform(0, 1) < 0.90 else 0
+        return 0.90
     elif age in range(30, 50):
-        return 1 if random.uniform(0, 1) < 0.40 else 0
+        return 0.40
     elif age in range(50, 70):
-        return 1 if random.uniform(0, 1) < 0.10 else 0
+        return 0.10
     elif age in range(70, 90):
-        return 1 if random.uniform(0, 1) < 0.15 else 0
+        return 0.15
     else:
         return 1
 
@@ -156,3 +157,18 @@ def get_obesity(age):
         return 1 if random.uniform(0, 1) < 0.15 + 0.02 else 0
     else:
         return 1 if random.uniform(0, 1) < 0.09 + 0.01 else 0
+
+
+def fitness_function(brief_statistic):
+    """
+    Gets the score for based of the statistic we get from each run
+    Higher value shows parameters are good
+    ----------
+    Parameters:
+        brief_statistic - dictionary{key(state of each person):value(number of person in that state)}
+    ----------
+    Return:
+        int - score
+    """
+    return brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + brief_statistic[
+        'recovered'] * 2 + brief_statistic['dead'] * 1
