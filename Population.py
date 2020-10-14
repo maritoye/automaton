@@ -111,9 +111,10 @@ class Population:
                 'age': dp.age,
                 'vulnerability_ratio': (1 - dp.vulnerability_ratio) * dp.follow_protocol,
                 'background_sickness': dp.background_sickness,
-                'death_ratio': dp.death_ratio
+                'smoking': True if dp.smoking else False,
+                'overweight': True if dp.bmi else False
             })
-        print(dps)
+        return dps
 
     def get_brief_statistics(self):
 
