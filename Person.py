@@ -26,7 +26,7 @@ class Person:
 
     def __init__(self, chance_of_infection):
         self.age = utils.set_age()
-        self.age_group = utils.get_age_group(self.age)
+        self.age_group = utils.get_age_group(self.age) #TODO We only set this property but we did not use it!
         self.background_sickness = utils.get_background_sickness(self.age)
         # self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
         self.exposure_radius = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
@@ -68,6 +68,7 @@ class Person:
 
             # if infected or sick but not in quarantine or isolation
             else:
+                #TODO should not be vulnerability_ratio = (mask + distancing + hygiene + curfew) / 4
                 protocols = (distancing + mask + hygiene) / 3
                 # social distancing rules =
                 # face mask rules / recommendations
@@ -91,6 +92,7 @@ class Person:
             self.death_ratio = 0.0120006 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0 + 0.02 if self.gender==Gender.MALE else 0
             # TODO adjust by age
         else:
+            # TODO adjust by age
             self.death_ratio = 0.001794 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0 + 0.02 if self.gender==Gender.MALE else 0
 
         return self.death_ratio
