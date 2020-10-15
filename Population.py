@@ -68,10 +68,14 @@ class Population:
                                                                                  self.hygiene, self.curfew)
                             if random.uniform(0, 1) <= risk_ratio * vulnerability_ratio:
                                 next_persons[y][x].state = PersonState.INFECTIOUS
-
+                                break  # I do not think there is a need to through rest of the loop after this condition
+                        if next_persons[y][x].state == PersonState.INFECTIOUS:
+                            break
+                    #TODO if one of the surrounding cells infectious or sick healthy person can go to quarantine which reduce the chance of getting the virus by 50% (exemple)
                 # if person is infectious
                 elif self.persons[y][x].state == PersonState.INFECTIOUS:
                     # TODO decide if person is to be quarantened (or isolated)(by rules from input)
+                    # TODO the person do the test based on test_ratio if positive fo to full_isolation
                     next_persons[y][x].incubation_period -= 1
                     if next_persons[y][x].incubation_period == 0:
                         next_persons[y][x].state = PersonState.SICK
@@ -85,7 +89,7 @@ class Population:
                             next_persons[y][x].state = PersonState.DEATH
                         else:
                             next_persons[y][x].state = PersonState.RECOVERED
-
+                # TODO if person recovered, no need for quarantine or isolation
         self.persons = next_persons
 
     def observe(self):
