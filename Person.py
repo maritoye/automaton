@@ -88,10 +88,10 @@ class Person:
         # if the person is smoking, increase the chance of death by 5%
         # if the person is overweight, increase the chance of death by 5%
         if self.background_sickness:
-            self.death_ratio = 0.0120006 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
+            self.death_ratio = 0.0120006 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0 + 0.02 if self.gender==Gender.MALE else 0
             # TODO adjust by age
         else:
-            self.death_ratio = 0.001794 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
+            self.death_ratio = 0.001794 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0 + 0.02 if self.gender==Gender.MALE else 0
 
         return self.death_ratio
 
@@ -102,3 +102,4 @@ class Person:
         print('Follow protocol =', self.follow_protocol)
         print('In quarantine =', self.quarantine)
         print('State =', self.state)
+        print('Gender =', self.gender)

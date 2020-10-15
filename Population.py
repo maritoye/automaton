@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
-from Types import PersonState
+from Types import PersonState, Gender
 
 
 class Population:
@@ -112,7 +112,8 @@ class Population:
                 'vulnerability_ratio': (1 - dp.vulnerability_ratio) * dp.follow_protocol,
                 'background_sickness': dp.background_sickness,
                 'smoking': True if dp.smoking else False,
-                'overweight': True if dp.bmi else False
+                'overweight': True if dp.bmi else False,
+                'gender': Gender.MALE if dp.gender == Gender.MALE else Gender.FEMALE
             })
         return dps
 
