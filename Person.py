@@ -52,30 +52,19 @@ class Person:
             return 0
         else:
             if self.quarantine == Quarantine.TOTAL_ISOLATION:
-                # any chance of people breaking isolation?
-                # what about people you live with? are they also isolated, or quarantined
-                # in those cases they can be infected...
                 return 0
 
                 # TODO or Not TODO? That is the question
 
             elif self.quarantine == Quarantine.QUARANTINE:
-                # how strict is the quarantine? (can you go to stores, be with others)
-                # how strictly do you follow protocols?
-                return 1 - (self.follow_protocol / 2)
+                risk_ratio = (1 - self.follow_protocol) * 0.5
+                return risk_ratio
 
-            # if infected or sick but not in quarantine or isolation
+            # if infected or sick but not in quarantine or isolation:
             else:
                 protocols = (distancing + mask + hygiene) / 3
-                # social distancing rules =
-                # face mask rules / recommendations
-                # + distancing (i.e one meter rule)
-                # + hygiene rules
 
-                risk_ratio = (1 - protocols) * (1 - self.follow_protocol)
-                # following protocols * social distancing rules
-                # + exposure??
-                # + staying at home rules (i.e portforbud) (can be part of the exposure variable??)
+                risk_ratio = 1 - (protocols * (self.follow_protocol))
                 return risk_ratio
 
     def get_death_ratio(self):
@@ -87,7 +76,6 @@ class Person:
         # if the person is overweight, increase the chance of death by 5%
         if self.background_sickness:
             self.death_ratio = 0.0120006 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
-            # TODO adjust by age
         else:
             self.death_ratio = 0.001794 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
 
