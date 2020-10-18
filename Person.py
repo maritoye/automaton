@@ -43,8 +43,8 @@ class Person:
 
     def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
         # risk of getting infected  0 no risk, 1 = highest risk
-        vulnerability_ratio = (mask + distancing + hygiene + curfew) / 4
-        return (1 - vulnerability_ratio) * self.follow_protocol
+        vulnerability_ratio = 1 - ((mask + distancing + hygiene + curfew + self.follow_protocol)/5)
+        return vulnerability_ratio * 0.8
 
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
         # risk of infecting others 0 no risk, 1 = highest risk
@@ -54,18 +54,14 @@ class Person:
             if self.quarantine == Quarantine.TOTAL_ISOLATION:
                 return 0
 
-                # TODO or Not TODO? That is the question
-
             elif self.quarantine == Quarantine.QUARANTINE:
-                risk_ratio = (1 - self.follow_protocol) * 0.5
+                risk_ratio = (1 - self.follow_protocol) * 0.2
                 return risk_ratio
 
             # if infected or sick but not in quarantine or isolation:
             else:
-                protocols = (distancing + mask + hygiene) / 3
-
-                risk_ratio = 1 - (protocols * (self.follow_protocol))
-                return risk_ratio
+                risk_ratio = 1 - ((distancing + mask + hygiene + curfew + self.follow_protocol)/5)
+                return risk_ratio * 0.8
 
     def get_death_ratio(self):
         # background_sickness, maybe age, lifestyle (smoking, weight), health care (respirator, medicines)
@@ -74,6 +70,7 @@ class Person:
         # 1.38% som får corona dør av det. 87% av desse har underliggende sykdom
         # if the person is smoking, increase the chance of death by 5%
         # if the person is overweight, increase the chance of death by 5%
+        #TODO include smoking and bmi?
         if self.background_sickness:
             self.death_ratio = 0.0120006 * (0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0
         else:

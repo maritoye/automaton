@@ -52,12 +52,12 @@ class RulesQuarantine(Enum):
     NOONE = 0
     SICK = 1
     SICK_INFECTIOUS = 2
-    SICK_INFECTION_NEIGHBORS = 3
+    SICK_INFECTIOUS_NEIGHBORS = 3
     ALL = 4
 
 class RulesIsolation(Enum):
     NOONE = 0
     SICK = 1
     SICK_INFECTIOUS = 2
-    SICK_INFECTION_NEIGHBORS = 3
+    SICK_INFECTIOUS_NEIGHBORS = 3
     ALL = 4
