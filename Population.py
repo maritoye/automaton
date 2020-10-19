@@ -104,7 +104,7 @@ class Population:
         for dp in dead_people:
             dps.append({
                 'age': dp.age,
-                'vulnerability_ratio': (1 - dp.vulnerability_ratio) * dp.follow_protocol,
+                'vulnerability_ratio': (1 - dp.risk_of_getting_infected) * dp.follow_protocol,
                 'background_sickness': dp.background_sickness,
                 'smoking': True if dp.smoking else False,
                 'overweight': True if dp.bmi else False,
