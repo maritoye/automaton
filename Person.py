@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-n = 10
+#n = 10
 from Types import PersonState, Quarantine, Gender
 import random
 import utils
