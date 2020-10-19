@@ -41,16 +41,6 @@ class Population:
             for j in range(self.persons.shape[1]):
                 self.persons[j][i] = Person(chance_of_infection=0.005)
 
-    def run(self, step_list):
-        #TODO WHY?
-        count = 0
-        while count < 1000:
-            count += 1
-            self.update()
-            if count in step_list:
-                # save image
-                pass
-
     def update(self):
         next_persons = copy.deepcopy(self.persons)
         for y in range(self.persons.shape[0]):
