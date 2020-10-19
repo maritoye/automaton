@@ -42,6 +42,7 @@ class Population:
                 self.persons[j][i] = Person(chance_of_infection=0.005)
 
     def run(self, step_list):
+        #TODO WHY?
         count = 0
         while count < 1000:
             count += 1
