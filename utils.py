@@ -82,7 +82,7 @@ def get_background_sickness(age):
 
 def get_adherence(age):
     """
-    Gets the adherence depending on age
+    Gets the adherence(following protocols) depending on age
     source: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#figuresntables
         date: 12.10.2020
     ----------
