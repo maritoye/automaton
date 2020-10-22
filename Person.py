@@ -31,7 +31,7 @@ class Person:
 
     def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
         # risk of getting infected  0 no risk, 1 = highest risk
-        self.risk_of_getting_infected = (1 - ((mask + distancing + hygiene + curfew + self.follow_protocol)/5)) * 0.8
+        self.risk_of_getting_infected = (1 - ((mask + distancing + hygiene + curfew + self.follow_protocol)/5)) * 0.7
         return self.risk_of_getting_infected
 
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
@@ -50,7 +50,7 @@ class Person:
 
             # if infected or sick but not in quarantine or isolation:
             else:
-                self.risk_of_infecting_others = (1 - ((distancing + mask + hygiene + curfew + self.follow_protocol)/5)) * 0.8
+                self.risk_of_infecting_others = (1 - ((distancing + mask + hygiene + curfew + self.follow_protocol)/5)) * 0.7
                 return self.risk_of_infecting_others
 
     def get_death_ratio(self):
