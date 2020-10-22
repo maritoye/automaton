@@ -10,7 +10,7 @@ from matplotlib import colors
 from Types import PersonState, Gender
 
 
-class Population:
+class GroupOfPeople:
     # changable (0-1)
     hygiene = 0
     mask = 0
