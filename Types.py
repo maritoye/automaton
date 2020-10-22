@@ -47,3 +47,17 @@ class AgeGroup(Enum):
     MIDDLE_AGE = range(50, 70)
     AGED = range(70, 90)
     OLD = range(90, 110)
+
+class RulesQuarantine(Enum):
+    NOONE = 0
+    SICK = 1
+    SICK_INFECTIOUS = 2
+    SICK_INFECTIOUS_NEIGHBORS = 3
+    ALL = 4
+
+class RulesIsolation(Enum):
+    NOONE = 0
+    SICK = 1
+    SICK_INFECTIOUS = 2
+    SICK_INFECTIOUS_NEIGHBORS = 3
+    ALL = 4

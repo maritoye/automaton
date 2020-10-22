@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
-from Types import PersonState, Gender
+from Types import RulesIsolation, RulesQuarantine, Quarantine,PersonState, Gender
 
 
 class GroupOfPeople:
@@ -17,8 +17,10 @@ class GroupOfPeople:
     distancing = 0
     curfew = 0
     test_rate = 0
-    # TODO quarantene rules (f.eks 0 = none, 1 = sick people, 2 = infectious people, 3 = contacts/neighbors og sick or infectious people, 4 = all)
-    # TODO isolation rules (f.eks 0 = none, 1 = sick people, 2 = infectious people, 3 = contacts/neighbors og sick or infectious people, 4 = all)
+
+    # changable (enum 0-4)
+    quarantine_rules = RulesQuarantine.NOONE
+    isolation_rules = RulesIsolation.NOONE
 
     # non-changable
     healthcare = 0  # access to medications and respirators
@@ -27,15 +29,18 @@ class GroupOfPeople:
 
     persons = []
 
-    def __init__(self, x, y, healthcare, hygiene, mask, distancing, curfew, test_rate):
+    def __init__(self, x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quarantine_rules, isolation_rules):
         self.healthcare = healthcare
         self.hygiene = hygiene
         self.mask = mask
         self.distancing = distancing
         self.curfew = curfew
         self.test_rate = test_rate
-
         self.persons = np.ndarray((y, x), dtype=np.object)
+
+        self.quarantine_rules = quarantine_rules
+        self.isolation_rules = isolation_rules
+
 
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
@@ -46,8 +51,9 @@ class GroupOfPeople:
         for y in range(self.persons.shape[0]):
             for x in range(self.persons.shape[1]):
                 # if person is healthy
+                radius = self.persons[y][x].exposure_radius
+
                 if self.persons[y][x].state == PersonState.HEALTHY:
-                    radius = self.persons[y][x].exposure_radius
                     vulnerability_ratio = self.persons[y][x].get_vulnerability_ratio(self.mask, self.distancing,
                                                                                      self.hygiene, self.curfew)
                     for dy in range(-radius, radius + 1):
@@ -62,25 +68,63 @@ class GroupOfPeople:
                                 break  # I do not think there is a need to through rest of the loop after this condition
                         if next_persons[y][x].state == PersonState.INFECTIOUS:
                             break
-                    #TODO if one of the surrounding cells infectious or sick healthy person can go to quarantine which reduce the chance of getting the virus by 50% (exemple)
                 # if person is infectious
                 elif self.persons[y][x].state == PersonState.INFECTIOUS:
-                    # TODO decide if person is to be quarantened (or isolated)(by rules from input)
-                    # TODO the person do the test based on test_ratio if positive fo to full_isolation
+                    if random.uniform(0,1) < self.test_rate:
+                        if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or self.quarantine_rules == RulesQuarantine.ALL:
+                            next_persons[y][x].quarantine = Quarantine.QUARANTINE
+                        if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or self.isolation_rules == RulesIsolation.ALL:
+                            next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+
                     next_persons[y][x].incubation_period -= 1
                     if next_persons[y][x].incubation_period == 0:
                         next_persons[y][x].state = PersonState.SICK
 
                 # if person is sick
                 elif self.persons[y][x].state == PersonState.SICK:
-                    # TODO decide if person is to be quarantened or isolated (by rules from input)
+
+                    if self.quarantine_rules == RulesQuarantine.SICK or \
+                                    self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
+                                    self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
+                                    self.quarantine_rules == RulesQuarantine.ALL:
+                        next_persons[y][x].quarantine = Quarantine.QUARANTINE
+                    if self.isolation_rules == RulesIsolation.SICK or \
+                                    self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
+                                    self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
+                                    self.isolation_rules == RulesIsolation.ALL:
+                        next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+
+                    if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS:
+                        #set neighbors to be quarantined
+                        for dy in range(-radius, radius + 1):
+                            for dx in range(-radius, radius + 1):
+                                if dy == 0 and dx == 0:
+                                    continue
+                                    (next_persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]]).quarantine = Quarantine.QUARANTINE
+
+                    if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS:
+                        #set neighbors to be isolated
+                        for dy in range(-radius, radius + 1):
+                            for dx in range(-radius, radius + 1):
+                                if dy == 0 and dx == 0:
+                                    continue
+                                (next_persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]]).quarantine = Quarantine.TOTAL_ISOLATION
+
                     next_persons[y][x].recovery_period -= 1
                     if next_persons[y][x].recovery_period == 0:
                         if random.uniform(0, 1) <= self.persons[y][x].get_death_ratio():
                             next_persons[y][x].state = PersonState.DEATH
                         else:
                             next_persons[y][x].state = PersonState.RECOVERED
-                # TODO if person recovered, no need for quarantine or isolation
+
+                elif self.quarantine_rules == RulesQuarantine.ALL:
+                    next_persons[y][x].quarantine = Quarantine.QUARANTINE
+
+                elif self.isolation_rules == RulesIsolation.ALL:
+                    next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+
+                #TODO: remove quarantines somehow (now people just stay quarantined and isolated forever...)
+
         self.persons = next_persons
 
     def observe(self):
