@@ -188,8 +188,6 @@ class GroupOfPeople:
         if next_persons_copy[y][x].quarantine_count == 0:
             next_persons_copy[y][x].quarantine_count = 10
 
-# TODO: remove quarantines somehow (now people just stay quarantined and isolated forever...)
-
         return next_persons_copy
 
     def get_statistics(self):
