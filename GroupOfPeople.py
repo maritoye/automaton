@@ -9,7 +9,7 @@ from matplotlib import colors
 
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
 
-CHANCE_OF_GETTING_INFECTION = 0.001
+CHANCE_OF_GETTING_INFECTION = 0.01
 
 
 class GroupOfPeople:
@@ -21,8 +21,8 @@ class GroupOfPeople:
     test_rate = 0
 
     # changable (enum 0-4)
-    quarantine_rules = RulesQuarantine.NOONE
-    isolation_rules = RulesIsolation.NOONE
+    quarantine_rules = RulesQuarantine.NO_ONE
+    isolation_rules = RulesIsolation.NO_ONE
 
     # non-changable
     healthcare = 0  # access to medications and respirators
@@ -184,5 +184,11 @@ class GroupOfPeople:
             'infectious': infectious_people,
             'sick': sick_people,
             'recovered': recovered_people,
-            'dead': dead_people
+            'dead': dead_people,
+            'healthcare': self.healthcare,
+            'hygiene': self.hygiene,
+            'mask': self.mask,
+            'distancing': self.distancing,
+            'curfew': self.curfew,
+            'test_rate': self.test_rate,
         }
