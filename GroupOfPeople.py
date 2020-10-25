@@ -93,75 +93,100 @@ class GroupOfPeople:
         plt.show()
 
     def set_quarantine_isolation(self, x, y, radius, next_persons_copy):
-#        if next_persons_copy[y][x].quarantine_count > 0:
-#            next_persons_copy[y][x].quarantine_count -= 1
-#        if next_persons_copy[y][x].quarantine_count == 0:
-#            next_persons_copy[y][x].quarantine = Quarantine.NO
+        if next_persons_copy[y][x].quarantine_count > 0:
+            next_persons_copy[y][x].quarantine_count -= 1
+        if next_persons_copy[y][x].quarantine_count == 0:
+            next_persons_copy[y][x].quarantine = Quarantine.NO
 
         if next_persons_copy[y][x].state == PersonState.INFECTIOUS:
             if random.uniform(0, 1) < self.test_rate:
                 if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
                                 self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
                                 self.quarantine_rules == RulesQuarantine.ALL:
-                    next_persons_copy[y][x].quarantine = Quarantine.QUARANTINE
-                    #if next_persons_copy[y][x].quarantine_count == 0:
-                        #next_persons_copy[y][x].quarantine_count = 10
+                    if next_persons_copy[y][x].quarantine == Quarantine.NO:
+                        next_persons_copy[y][x].quarantine = Quarantine.QUARANTINE
+                        if next_persons_copy[y][x].quarantine_count == 0:
+                            next_persons_copy[y][x].quarantine_count = 10
+
                 if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
                                 self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
                                 self.isolation_rules == RulesIsolation.ALL:
-                    next_persons_copy[y][x].quarantine = Quarantine.TOTAL_ISOLATION
-                    #next_persons_copy[y][x].quarantine_count = 10
+                    if next_persons_copy[y][x].quarantine != Quarantine.TOTAL_ISOLATION:
+                        next_persons_copy[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+                        if next_persons_copy[y][x].quarantine_count == 0:
+                            next_persons_copy[y][x].quarantine_count = 10
 
                 if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS:
                     for dy in range(-radius, radius + 1):
                         for dx in range(-radius, radius + 1):
-                            if dy == 0 and dx == 0:
-                                continue
-                            (next_persons_copy[(y + dy) % self.persons.shape[0]][
-                                 (x + dx) % self.persons.shape[1]]).quarantine = Quarantine.QUARANTINE
+                            if not (dy == 0 and dx == 0):
+                                neighbor = (next_persons_copy[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
+                                if neighbor.quarantine == Quarantine.NO:
+                                    neighbor.quarantine = Quarantine.QUARANTINE
+                                    if neighbor.quarantine_count == 0:
+                                        neighbor.quarantine_count = 10
 
                 if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS:
                     for dy in range(-radius, radius + 1):
                         for dx in range(-radius, radius + 1):
-                            if dy == 0 and dx == 0:
-                                continue
-                            (next_persons_copy[(y + dy) % self.persons.shape[0]][
-                                 (x + dx) % self.persons.shape[1]]).quarantine = Quarantine.TOTAL_ISOLATION
-
+                            if not (dy == 0 and dx == 0):
+                                neighbor = (
+                                next_persons_copy[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
+                                if neighbor.quarantine != Quarantine.TOTAL_ISOLATION:
+                                    neighbor.quarantine = Quarantine.TOTAL_ISOLATION
+                                    if neighbor.quarantine_count == 0:
+                                        neighbor.quarantine_count = 10
 
         elif next_persons_copy[y][x].state == PersonState.SICK:
             if self.quarantine_rules == RulesQuarantine.SICK or \
                             self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
                             self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
                             self.quarantine_rules == RulesQuarantine.ALL:
-                next_persons_copy[y][x].quarantine = Quarantine.QUARANTINE
+                if next_persons_copy[y][x].quarantine == Quarantine.NO:
+                    next_persons_copy[y][x].quarantine = Quarantine.QUARANTINE
+                    if next_persons_copy[y][x].quarantine_count == 0:
+                        next_persons_copy[y][x].quarantine_count = 10
+
             if self.isolation_rules == RulesIsolation.SICK or \
                             self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
                             self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
                             self.isolation_rules == RulesIsolation.ALL:
-                next_persons_copy[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+                if next_persons_copy[y][x].quarantine != Quarantine.TOTAL_ISOLATION:
+                    next_persons_copy[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+                    if next_persons_copy[y][x].quarantine_count == 0:
+                        next_persons_copy[y][x].quarantine_count = 10
 
             if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS:
                 for dy in range(-radius, radius + 1):
                     for dx in range(-radius, radius + 1):
-                        if dy == 0 and dx == 0:
-                            continue
-                        (next_persons_copy[(y + dy) % self.persons.shape[0]][
-                            (x + dx) % self.persons.shape[1]]).quarantine = Quarantine.QUARANTINE
+                        if not (dy == 0 and dx == 0):
+                            neighbor = (
+                                next_persons_copy[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
+                            if neighbor.quarantine == Quarantine.NO:
+                                neighbor.quarantine = Quarantine.QUARANTINE
+                                if neighbor.quarantine_count == 0:
+                                    neighbor.quarantine_count = 10
 
             if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS:
                 for dy in range(-radius, radius + 1):
                     for dx in range(-radius, radius + 1):
-                        if dy == 0 and dx == 0:
-                            continue
-                        (next_persons_copy[(y + dy) % self.persons.shape[0]][
-                             (x + dx) % self.persons.shape[1]]).quarantine = Quarantine.TOTAL_ISOLATION
+                        if not (dy == 0 and dx == 0):
+                            neighbor = (
+                                next_persons_copy[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
+                            if neighbor.quarantine != Quarantine.TOTAL_ISOLATION:
+                                neighbor.quarantine = Quarantine.TOTAL_ISOLATION
+                                if neighbor.quarantine_count == 0:
+                                    neighbor.quarantine_count = 10
 
         if self.quarantine_rules == RulesQuarantine.ALL:
             next_persons_copy[y][x].quarantine = Quarantine.QUARANTINE
+            if next_persons_copy[y][x].quarantine_count == 0:
+                next_persons_copy[y][x].quarantine_count = 10
 
         if self.isolation_rules == RulesIsolation.ALL:
             next_persons_copy[y][x].quarantine = Quarantine.TOTAL_ISOLATION
+        if next_persons_copy[y][x].quarantine_count == 0:
+            next_persons_copy[y][x].quarantine_count = 10
 
 # TODO: remove quarantines somehow (now people just stay quarantined and isolated forever...)
 
