@@ -14,7 +14,8 @@ class Person:
         self.age_group = utils.get_age_group(self.age)  # TODO We only set this property but we did not use it!
         self.background_sickness = utils.get_background_sickness(self.age)
         # self.exposure = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
-        self.exposure_radius = random.randint(1, 3) # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
+        self.exposure_radius = random.randint(1,
+                                              3)  # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
         self.follow_protocol = utils.get_adherence(self.age)
         self.smoking = utils.get_smoking(self.age)
         self.bmi = utils.get_obesity(self.age)
@@ -31,7 +32,7 @@ class Person:
 
     def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
         # risk of getting infected  0 no risk, 1 = highest risk
-        self.risk_of_getting_infected = (1 - ((mask + distancing + hygiene + curfew + self.follow_protocol)/5)) * 0.7
+        self.risk_of_getting_infected = (1 - ((mask + distancing + hygiene + curfew + self.follow_protocol) / 5)) * 0.7
         return self.risk_of_getting_infected
 
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
@@ -50,7 +51,8 @@ class Person:
 
             # if infected or sick but not in quarantine or isolation:
             else:
-                self.risk_of_infecting_others = (1 - ((distancing + mask + hygiene + curfew + self.follow_protocol)/5)) * 0.7
+                self.risk_of_infecting_others = (1 - (
+                            (distancing + mask + hygiene + curfew + self.follow_protocol) / 5)) * 0.7
                 return self.risk_of_infecting_others
 
     def get_death_ratio(self):
