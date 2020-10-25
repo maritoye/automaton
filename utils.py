@@ -170,5 +170,33 @@ def fitness_function(brief_statistic):
     Return:
         int - score
     """
-    return brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + brief_statistic[
-        'recovered'] * 2 + brief_statistic['dead'] * 1
+    return brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + \
+           brief_statistic[
+               'recovered'] * 2 + brief_statistic['dead'] * 1
+
+
+def mutate_parameter(value, variation):
+    mutated_parameter = random.uniform(value - variation, value + variation)
+    if mutated_parameter <= 0:
+        return 0
+    elif mutated_parameter >= 1:
+        return 1
+    return mutated_parameter
+
+
+def mutate_parameter_up(value, variation):
+    mutated_parameter = random.uniform(value, value + variation)
+    if mutated_parameter <= 0:
+        return 0
+    elif mutated_parameter >= 1:
+        return 1
+    return mutated_parameter
+
+
+def mutate_parameter_down(value, variation):
+    mutated_parameter = random.uniform(value - variation, value)
+    if mutated_parameter <= 0:
+        return 0
+    elif mutated_parameter >= 1:
+        return 1
+    return mutated_parameter
