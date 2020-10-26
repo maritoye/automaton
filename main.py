@@ -1,7 +1,6 @@
 import random
 
 from GroupOfPeople import GroupOfPeople
-from utils import fitness_function, mutate_parameter
 from Types import RulesIsolation, RulesQuarantine
 
 firstPopulation = GroupOfPeople(x=50, y=50, healthcare=0.8, hygiene=0.8, mask=0.8, distancing=0.8, curfew=0.6,
@@ -34,5 +33,4 @@ for evolution_index in range(25):
 
     for index in range(10):
         print(groupsOfPeople[index].get_brief_statistics())
-
     # TODO getting the best four! groupsOfPeople[:4]
