@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
+from utils import fitness_function
 
 CHANCE_OF_GETTING_INFECTION = 0.005
 
@@ -39,7 +40,7 @@ class GroupOfPeople:
 
         self.quarantine_rules = quarantine_rules
         self.isolation_rules = isolation_rules
-
+        self.score = 0
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
                 self.persons[i][j] = Person(chance_of_infection=CHANCE_OF_GETTING_INFECTION)
@@ -102,16 +103,16 @@ class GroupOfPeople:
         if next_persons[y][x].state == PersonState.INFECTIOUS:
             if random.uniform(0, 1) < self.test_rate:
                 if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
-                                self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
-                                self.quarantine_rules == RulesQuarantine.ALL:
+                        self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
+                        self.quarantine_rules == RulesQuarantine.ALL:
                     if next_persons[y][x].quarantine == Quarantine.NO:
                         next_persons[y][x].quarantine = Quarantine.QUARANTINE
                         if next_persons[y][x].quarantine_count == 0:
                             next_persons[y][x].quarantine_count = 10
 
                 if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
-                                self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
-                                self.isolation_rules == RulesIsolation.ALL:
+                        self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
+                        self.isolation_rules == RulesIsolation.ALL:
                     if next_persons[y][x].quarantine != Quarantine.TOTAL_ISOLATION:
                         next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
                         if next_persons[y][x].quarantine_count == 0:
@@ -141,18 +142,18 @@ class GroupOfPeople:
 
         elif next_persons[y][x].state == PersonState.SICK:
             if self.quarantine_rules == RulesQuarantine.SICK or \
-                            self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
-                            self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
-                            self.quarantine_rules == RulesQuarantine.ALL:
+                    self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
+                    self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
+                    self.quarantine_rules == RulesQuarantine.ALL:
                 if next_persons[y][x].quarantine == Quarantine.NO:
                     next_persons[y][x].quarantine = Quarantine.QUARANTINE
                     if next_persons[y][x].quarantine_count == 0:
                         next_persons[y][x].quarantine_count = 10
 
             if self.isolation_rules == RulesIsolation.SICK or \
-                            self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
-                            self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
-                            self.isolation_rules == RulesIsolation.ALL:
+                    self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
+                    self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
+                    self.isolation_rules == RulesIsolation.ALL:
                 if next_persons[y][x].quarantine != Quarantine.TOTAL_ISOLATION:
                     next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
                     if next_persons[y][x].quarantine_count == 0:
@@ -242,4 +243,9 @@ class GroupOfPeople:
             'distancing': self.distancing,
             'curfew': self.curfew,
             'test_rate': self.test_rate,
+            'score': self.score
         }
+
+    def get_score(self):
+        self.score = fitness_function(self.get_brief_statistics())
+        return self.score
