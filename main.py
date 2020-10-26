@@ -1,3 +1,5 @@
+import random
+
 from GroupOfPeople import GroupOfPeople
 from utils import fitness_function, mutate_parameter
 from Types import RulesIsolation, RulesQuarantine
@@ -11,14 +13,14 @@ groupsOfPeople = []
 for index in range(10):
     groupsOfPeople.append(GroupOfPeople(x=50,
                                         y=50,
-                                        healthcare=mutate_parameter(0.5, 0.05),
-                                        hygiene=mutate_parameter(0.5, 0.05),
-                                        mask=mutate_parameter(0.5, 0.05),
-                                        distancing=mutate_parameter(0.5, 0.05),
-                                        curfew=mutate_parameter(0.5, 0.05),
-                                        test_rate=mutate_parameter(0.5, 0.05),
-                                        quarantine_rules=RulesQuarantine.NO_ONE,
-                                        isolation_rules=RulesIsolation.NO_ONE))
+                                        healthcare=random.uniform(0, 1),
+                                        hygiene=random.uniform(0, 1),
+                                        mask=random.uniform(0, 1),
+                                        distancing=random.uniform(0, 1),
+                                        curfew=random.uniform(0, 1),
+                                        test_rate=random.uniform(0, 1),
+                                        quarantine_rules=random.choice(list(RulesQuarantine)),
+                                        isolation_rules=random.choice(list(RulesQuarantine))))
 
 for evolution_index in range(25):
     for step in range(100):
@@ -32,6 +34,5 @@ for evolution_index in range(25):
 
     for index in range(10):
         print(groupsOfPeople[index].get_brief_statistics())
-
 
     # TODO getting the best four! groupsOfPeople[:4]
