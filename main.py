@@ -32,3 +32,6 @@ for evolution_index in range(25):
 
     for index in range(10):
         print(groupsOfPeople[index].get_brief_statistics())
+
+
+    # TODO getting the best four! groupsOfPeople[:4]
