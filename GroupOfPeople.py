@@ -42,7 +42,7 @@ class GroupOfPeople:
 
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
-                self.persons[j][i] = Person(chance_of_infection=CHANCE_OF_GETTING_INFECTION)
+                self.persons[i][j] = Person(chance_of_infection=CHANCE_OF_GETTING_INFECTION)
 
     def update(self):
         next_persons = copy.deepcopy(self.persons)

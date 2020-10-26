@@ -28,7 +28,7 @@ class Person:
         self.recovery_period = random.randint(7, 28)
         self.risk_of_infecting_others = 0
         self.risk_of_getting_infected = 0
-        self.death_ratio = 0
+        self.death_ratio = self.set_death_ratio()
 
     def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
         # risk of getting infected  0 no risk, 1 = highest risk
@@ -54,7 +54,7 @@ class Person:
                 self.risk_of_infecting_others = (1 - ((distancing + mask + hygiene + curfew + self.follow_protocol)/5)) * 0.7
                 return self.risk_of_infecting_others
 
-    def get_death_ratio(self):
+    def set_death_ratio(self):
         # background_sickness, maybe age, lifestyle (smoking, weight), health care (respirator, medicines)
         # https://www.fhi.no/contentassets/8a971e7b0a3c4a06bdbf381ab52e6157/vedlegg/andre-halvar-2020/2020.09.23-ukerapport-uke-38-covid-19.pdf
         # page 24
@@ -62,12 +62,13 @@ class Person:
         # if the person is smoking, increase the chance of death by 5%
         # if the person is overweight, increase the chance of death by 5%
         if self.background_sickness:
-            self.death_ratio = 0.0120006 * (
+            return 0.0120006 * (
                     0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0 + 0.02 if self.gender == Gender.MALE else 0
         else:
-            self.death_ratio = 0.001794 * (
+            return 0.001794 * (
                     0.01 * self.age) + 0.05 if self.smoking else 0 + 0.05 if self.bmi else 0 + 0.02 if self.gender == Gender.MALE else 0
 
+    def get_death_ratio(self):
         return self.death_ratio
 
     def print_self(self):
