@@ -1,13 +1,29 @@
 import pycxsimulator
 from pylab import *
 import numpy as np
+import random
 
 n = 100  # size of space: n x n
 p = 0.24  # probability of initially panicky individuals
 
 
+
 class Person:
     pass
+
+	def __init__(self):
+		self.age = random.randint(0,83)
+		self.health = random.random()
+		# todo: exposure should be a function of age? old are less exposed to others
+		self.exposure = 0
+		self.lawAbiding = random.randint(0,1)
+		self.quarantined = 0
+
+	def setQuarantine(self, quarantined):
+		self.quarantined = quarantined
+
+	def setRisk(self):
+		# call a function that calculates risk of getting infected
 
 
 def initialize():
