@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
+from utils import fitness_function
 
 CHANCE_OF_GETTING_INFECTION = 0.005
 
@@ -39,6 +40,7 @@ class GroupOfPeople:
 
         self.quarantine_rules = quarantine_rules
         self.isolation_rules = isolation_rules
+        self.fitness = 0
 
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
@@ -218,6 +220,7 @@ class GroupOfPeople:
         sick_people = 0
         recovered_people = 0
         dead_people = 0
+
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
                 if self.persons[i, j].state == PersonState.HEALTHY:
@@ -231,6 +234,7 @@ class GroupOfPeople:
                 elif self.persons[i, j].state == PersonState.DEATH:
                     dead_people += 1
         return {
+            'fitness': self.fitness,
             'healthy': healthy_people,
             'infectious': infectious_people,
             'sick': sick_people,
@@ -242,4 +246,10 @@ class GroupOfPeople:
             'distancing': self.distancing,
             'curfew': self.curfew,
             'test_rate': self.test_rate,
+            'quarantine_rules': self.quarantine_rules,
+            'isolation_rules': self.isolation_rules,
         }
+
+    def get_fitness(self):
+        self.fitness = fitness_function(self.get_brief_statistics())
+        return self.fitness

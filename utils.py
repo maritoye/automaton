@@ -174,6 +174,8 @@ def fitness_function(brief_statistic):
            brief_statistic[
                'recovered'] * 2 + brief_statistic['dead'] * 1
 
+    #TODO: give higher variables a cost, also cost for higher quarantine avd isolation values
+
 
 def mutate_parameter(value, variation):
     mutated_parameter = random.uniform(value - variation, value + variation)
@@ -200,3 +202,13 @@ def mutate_parameter_down(value, variation):
     elif mutated_parameter >= 1:
         return 1
     return mutated_parameter
+
+def mutate_quarantine_isolation(value, variation):
+    mutated_parameter = random.randint(value - variation, value + variation)
+    if mutated_parameter <= 0:
+        mutated_parameter = 0
+    elif mutated_parameter >= 4:
+        mutated_parameter = 4
+    return mutated_parameter
+
+

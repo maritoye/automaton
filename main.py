@@ -1,91 +1,152 @@
 from GroupOfPeople import GroupOfPeople
-from utils import fitness_function, mutate_parameter
-from Types import RulesIsolation, RulesQuarantine
-from mutation import choose_mutation_direction
+from utils import mutate_parameter, mutate_quarantine_isolation
+import random
+from Types import RulesQuarantine, RulesIsolation
 
-firstPopulation = GroupOfPeople(x=50, y=50, healthcare=0.8, hygiene=0.8, mask=0.8, distancing=0.8, curfew=0.6,
-                                test_rate=0.1, quarantine_rules=RulesQuarantine.NO_ONE,
-                                isolation_rules=RulesIsolation.NO_ONE)
 
-groupOfPeoples = []
+populationSize = 10
+numberOfParents = 4
+numberOfGenerations = 10
 
-for index in range(5):
-    groupOfPeoples.append(GroupOfPeople(x=50,
-                                        y=50,
-                                        healthcare=mutate_parameter(0.5, 0.05),
-                                        hygiene=mutate_parameter(0.5, 0.05),
-                                        mask=mutate_parameter(0.5, 0.05),
-                                        distancing=mutate_parameter(0.5, 0.05),
-                                        curfew=mutate_parameter(0.5, 0.05),
-                                        test_rate=mutate_parameter(0.5, 0.05),
-                                        quarantine_rules=RulesQuarantine.NO_ONE,
-                                        isolation_rules=RulesIsolation.NO_ONE))
+mutation_probability = 0.7
+max_mutation = 0.3
 
-for evolution_index in range(25):
-    for step in range(100):
-        groupOfPeoples[0].update()
-        groupOfPeoples[1].update()
-        groupOfPeoples[2].update()
-        groupOfPeoples[3].update()
-        groupOfPeoples[4].update()
-        # firstPopulation.update()
-        # if step == 0 or step % 20 == 0:
-        #    print(step)
-        #    firstPopulation.observe()
-        #    print(firstPopulation.get_brief_statistics())
-        #    print(firstPopulation.get_statistics())
+x = 50
+y = 50
 
-    bestGroupOfPeoplesIndex = 0
-    bestGroupOfPeoplesScore = 0
-    for i in range(5):
-        if fitness_function(groupOfPeoples[i].get_brief_statistics()) > bestGroupOfPeoplesScore:
-            bestGroupOfPeoplesScore = fitness_function(groupOfPeoples[i].get_brief_statistics())
-            bestGroupOfPeoplesIndex = i
+gene_types = {'healthcare', 'hygiene', 'mask', 'distancing', 'curfew', 'test_rate', 'quarantine_rules', 'isolation_rules'}
 
-    # print("Round (",evolution_index, ") ", groupOfPeoples[0].get_brief_statistics())
-    # print("Round (",evolution_index, ") ", fitness_function(groupOfPeoples[0].get_brief_statistics()))
-    # print("Round (",evolution_index, ") ", groupOfPeoples[1].get_brief_statistics())
-    # print("Round (",evolution_index, ") ", fitness_function(groupOfPeoples[1].get_brief_statistics()))
-    # print("Round (",evolution_index, ") ", groupOfPeoples[2].get_brief_statistics())
-    # print("Round (",evolution_index, ") ", fitness_function(groupOfPeoples[2].get_brief_statistics()))
-    # print("Round (",evolution_index, ") ", groupOfPeoples[3].get_brief_statistics())
-    # print("Round (",evolution_index, ") ", fitness_function(groupOfPeoples[3].get_brief_statistics()))
-    # print("Round (",evolution_index, ") ", groupOfPeoples[4].get_brief_statistics())
-    # print("Round (",evolution_index, ") ", fitness_function(groupOfPeoples[4].get_brief_statistics()))
 
-    print(
-        "Round %d Winner is %d with score of %d" % (evolution_index, bestGroupOfPeoplesIndex, bestGroupOfPeoplesScore))
-    print(groupOfPeoples[bestGroupOfPeoplesIndex].get_brief_statistics())
 
-    # choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'healthcare')
-    best_healthcare_score_so_far = choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'healthcare')
+def main():
+	population = []
 
-    # choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'hygiene')
-    best_hygiene_score_so_far = choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'hygiene')
+	for index in range(populationSize):
+		population.append(GroupOfPeople(x=x,
+										y=y,
+										healthcare=mutate_parameter(0.5, 0.5),
+										hygiene=mutate_parameter(0.5, 0.5),
+										mask=mutate_parameter(0.5, 0.5),
+										distancing=mutate_parameter(0.5, 0.5),
+										curfew=mutate_parameter(0.5, 0.5),
+										test_rate=mutate_parameter(0.5, 0.5),
+										quarantine_rules=RulesQuarantine(mutate_quarantine_isolation(2, 2)),
+										isolation_rules=RulesIsolation(mutate_quarantine_isolation(2, 2))))
 
-    # choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'mask')
-    best_mask_score_so_far = choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'mask')
+	run_generations(initial_population=population)
 
-    # choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'distancing')
-    best_distancing_score_so_far = choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'distancing')
 
-    # choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'curfew')
-    best_curfew_score_so_far = choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'curfew')
+def run_generations(initial_population):
 
-    # choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'test_rate')
-    best_test_rate_score_so_far = choose_mutation_direction(groupOfPeoples[bestGroupOfPeoplesIndex],'test_rate')
+	current_population = initial_population
 
-    groupOfPeoples = []
+#	all_time_best = {}
 
-    for index in range(5):
-        groupOfPeoples.append(GroupOfPeople(x=50,
-                                            y=50,
-                                            healthcare=mutate_parameter(best_healthcare_score_so_far, 0.01),
-                                            hygiene=mutate_parameter(best_hygiene_score_so_far, 0.01),
-                                            mask=mutate_parameter(best_mask_score_so_far, 0.01),
-                                            distancing=mutate_parameter(best_distancing_score_so_far, 0.01),
-                                            curfew=mutate_parameter(best_curfew_score_so_far, 0.01),
-                                            test_rate=mutate_parameter(best_test_rate_score_so_far, 0.01),
-                                            quarantine_rules=RulesQuarantine.NO_ONE,
-                                            isolation_rules=RulesIsolation.NO_ONE))
+	for generation in range(numberOfGenerations):
+		print(f"\nGeneration %g:" % (generation+1))
+		for step in range(100):
+			for i in range(populationSize):
+				current_population[i].update()
 
+		for i in range(populationSize):
+			current_population[i].get_fitness()
+			current_population.sort(key=lambda gop: gop.fitness, reverse=True)
+
+#		if all_time_best:
+#			if all_time_best.get_fitness() < current_population[0].get_fitness():
+#				all_time_best = current_population[0]
+#			else:
+#				current_population.append(all_time_best)
+#				current_population.sort(key=lambda gop: gop.fitness, reverse=True)
+#
+#		else:
+#			all_time_best = current_population[0]
+
+		for i in range(populationSize):
+			current_population[i].get_fitness()
+			current_population[i] = current_population[i].get_brief_statistics()
+			print("\nIndividual %i:" % (i+1))
+			print(f"Fitness: %f" % (int(current_population[i]['fitness'])))
+			print("Parameters: ")
+			print(current_population[i])
+
+		parents = current_population[:numberOfParents]
+
+		current_population = create_population(parents)
+
+
+def create_population(parents):
+	new_population = []
+
+	for new_offspring in range(populationSize):
+		crossover_genes = crossover(parents)
+		offspring_genes = mutation(crossover_genes)
+		offspring = GroupOfPeople(offspring_genes['x'],offspring_genes['y'],offspring_genes['healthcare'],
+								  offspring_genes['hygiene'],offspring_genes['mask'],offspring_genes['distancing'],
+								  offspring_genes['curfew'],offspring_genes['test_rate'],
+								  RulesQuarantine(offspring_genes['quarantine_rules']),
+								  RulesQuarantine(offspring_genes['isolation_rules']))
+		new_population.append(offspring)
+
+	return new_population
+
+
+def crossover(parents):
+	crossover_genes = {}
+	parent_weights = []
+
+	for i in range(numberOfParents):
+		parent_weights = set_parent_weights(parents)
+
+	for gene in gene_types:
+		parent_for_this_gene = parent_weights[random.randint(0,len(parent_weights)-1)]
+		value = parents[parent_for_this_gene][gene]
+		crossover_genes[gene] = value
+
+	return crossover_genes
+
+
+def mutation(genes):
+	mutated_genes = {'x':x, 'y':y}
+
+	for gene_type in gene_types:
+
+		if gene_type != 'quarantine_rules' and gene_type != 'isolation_rules':
+			value = genes[gene_type]
+			if random.uniform(0,1) < mutation_probability:
+				new_value = random.uniform(value-max_mutation,value+max_mutation)
+				if new_value > 1:
+					new_value = 1
+				elif new_value < 0:
+					new_value = 0
+				mutated_genes[gene_type] = new_value
+			else:
+				mutated_genes[gene_type] = value
+		else:
+			value = genes[gene_type].value
+			if random.uniform(0,1) < mutation_probability:
+				new_value = random.randint(value-1,value+1)
+				if new_value > 4:
+					new_value = 4
+				elif new_value < 0:
+					new_value = 0
+				mutated_genes[gene_type] = new_value
+			else:
+				mutated_genes[gene_type] = value
+
+	return mutated_genes
+
+
+def set_parent_weights(parents):
+	parent_weights = []
+
+	for i in range(numberOfParents):
+		fitness = parents[i]['fitness']
+		probability_of_parent = fitness//200
+		for j in range(probability_of_parent):
+			parent_weights.append(i)
+
+	return parent_weights
+
+if __name__ == '__main__':
+	main()
