@@ -1,3 +1,5 @@
+import random
+
 from GroupOfPeople import GroupOfPeople
 from utils import mutate_parameter, mutate_quarantine_isolation
 import random
