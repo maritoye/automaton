@@ -16,6 +16,8 @@ max_mutation = 0.3
 x = 50
 y = 50
 
+fitness_weight_accuracy = 200
+
 gene_types = {'healthcare', 'hygiene', 'mask', 'distancing', 'curfew', 'test_rate', 'quarantine_rules', 'isolation_rules'}
 
 
@@ -98,7 +100,7 @@ def crossover(parents):
 	parent_weights = []
 
 	for i in range(numberOfParents):
-		parent_weights = set_parent_weights(parents)
+		parent_weights = get_parent_weights(parents)
 
 	for gene in gene_types:
 		parent_for_this_gene = parent_weights[random.randint(0,len(parent_weights)-1)]
@@ -139,12 +141,12 @@ def mutation(genes):
 	return mutated_genes
 
 
-def set_parent_weights(parents):
+def get_parent_weights(parents):
 	parent_weights = []
 
 	for i in range(numberOfParents):
 		fitness = parents[i]['fitness']
-		probability_of_parent = fitness//200
+		probability_of_parent = fitness//fitness_weight_accuracy
 		for j in range(probability_of_parent):
 			parent_weights.append(i)
 
