@@ -9,3 +9,5 @@ x = 40
 y = 40
 
 gene_types = {'healthcare', 'hygiene', 'mask', 'distancing', 'curfew', 'test_rate', 'quarantine_rules', 'isolation_rules'}
+
+fitness_accuracy = 200

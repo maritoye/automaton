@@ -7,8 +7,7 @@ import const
 def run_generations(initial_population):
 	"""
 	Runs numberOfGeneration amount of generations
-	:param initial_population: list of instances of GroupOfPeople
-	:return:
+	:param initial_population: list of instances of GroupOfPeople with length population_size
 	"""
 
 	current_population = initial_population
@@ -50,9 +49,9 @@ def run_generations(initial_population):
 
 def create_population(parents):
 	"""
-
-	:param parents:
-	:return:
+	Creates a new population with population_size amount of offsprings, from parents
+	:param parents: list of dicts, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
+	:return: list of instances of GroupOfPeople with length population_size
 	"""
 	new_population = []
 
@@ -71,9 +70,10 @@ def create_population(parents):
 
 def crossover(parents):
 	"""
-
-	:param parents:
-	:return:
+	Does crossover by choosing genes randomly from the parents, with a probability of each parents gene being chosen
+	given by the parent_weights list
+	:param parents: list of dict, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
+	:return: dict - containing a full set of genes which is a crossover of the parents genes
 	"""
 	crossover_genes = {}
 	parent_weights = []
@@ -91,9 +91,10 @@ def crossover(parents):
 
 def mutation(genes):
 	"""
-
-	:param genes:
-	:return:
+	mutates each gene in a set of genes, each with a probability of mutation_probability. If mutation is chosen the gene
+	will mutate a maximum of max_mutation
+	:param genes: dict - one full set of genes
+	:return: dict - one full set of genes
 	"""
 	mutated_genes = {'x':const.x, 'y':const.y}
 
@@ -127,15 +128,16 @@ def mutation(genes):
 
 def set_parent_weights(parents):
 	"""
-
-	:param parents:
-	:return:
+	Creates a list with fitness/fitness_accuracy number of instances for each of the parents,
+	for having higher probability of choosing genes of a parent if the parent has high fitness.
+	:param parents: list of dict, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
+	:return: list of int
 	"""
 	parent_weights = []
 
 	for i in range(const.number_of_parents):
 		fitness = parents[i]['fitness']
-		probability_of_parent = fitness//200
+		probability_of_parent = fitness//const.fitness_accuracy
 		for j in range(probability_of_parent):
 			parent_weights.append(i)
 
