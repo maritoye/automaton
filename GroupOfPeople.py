@@ -189,8 +189,8 @@ class GroupOfPeople:
 
         if self.isolation_rules == RulesIsolation.ALL:
             next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
-        if next_persons[y][x].quarantine_count == 0:
-            next_persons[y][x].quarantine_count = 10
+            if next_persons[y][x].quarantine_count == 0:
+                next_persons[y][x].quarantine_count = 10
 
         return next_persons
 
@@ -234,7 +234,7 @@ class GroupOfPeople:
                 elif self.persons[i, j].state == PersonState.DEATH:
                     dead_people += 1
         return {
-            'fitness': self.fitness,
+            'fitness': int(self.fitness),
             'healthy': healthy_people,
             'infectious': infectious_people,
             'sick': sick_people,
