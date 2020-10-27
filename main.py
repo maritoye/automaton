@@ -6,7 +6,7 @@ from Types import RulesQuarantine, RulesIsolation
 
 populationSize = 10
 numberOfParents = 4
-numberOfGenerations = 10
+numberOfGenerations = 25
 
 mutation_probability = 0.7
 max_mutation = 0.3
