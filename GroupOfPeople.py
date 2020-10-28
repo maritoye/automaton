@@ -106,18 +106,12 @@ class GroupOfPeople:
                 if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
                                 self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
                                 self.quarantine_rules == RulesQuarantine.ALL:
-                    if next_persons[y][x].quarantine == Quarantine.NO:
-                        next_persons[y][x].quarantine = Quarantine.QUARANTINE
-                        if next_persons[y][x].quarantine_count == 0:
-                            next_persons[y][x].quarantine_count = 10
+                    self.set_count(next_persons[y][x], Quarantine.NO, Quarantine.QUARANTINE, 10)
 
                 if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
                                 self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
                                 self.isolation_rules == RulesIsolation.ALL:
-                    if next_persons[y][x].quarantine != Quarantine.TOTAL_ISOLATION:
-                        next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
-                        if next_persons[y][x].quarantine_count == 0:
-                            next_persons[y][x].quarantine_count = 10
+                    self.set_count(next_persons[y][x], Quarantine.TOTAL_ISOLATION, Quarantine.TOTAL_ISOLATION, 10)
 
                 if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS:
                     for dy in range(-radius, radius + 1):
@@ -125,10 +119,7 @@ class GroupOfPeople:
                             if not (dy == 0 and dx == 0):
                                 neighbor = (
                                     next_persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
-                                if neighbor.quarantine == Quarantine.NO:
-                                    neighbor.quarantine = Quarantine.QUARANTINE
-                                    if neighbor.quarantine_count == 0:
-                                        neighbor.quarantine_count = 10
+                                self.set_count(neighbor, Quarantine.NO, Quarantine.QUARANTINE, 10)
 
                 if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS:
                     for dy in range(-radius, radius + 1):
@@ -136,29 +127,20 @@ class GroupOfPeople:
                             if not (dy == 0 and dx == 0):
                                 neighbor = (
                                     next_persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
-                                if neighbor.quarantine != Quarantine.TOTAL_ISOLATION:
-                                    neighbor.quarantine = Quarantine.TOTAL_ISOLATION
-                                    if neighbor.quarantine_count == 0:
-                                        neighbor.quarantine_count = 10
+                                self.set_count(neighbor, Quarantine.TOTAL_ISOLATION, Quarantine.TOTAL_ISOLATION, 10)
 
         elif next_persons[y][x].state == PersonState.SICK:
             if self.quarantine_rules == RulesQuarantine.SICK or \
                             self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS or \
                             self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS or \
                             self.quarantine_rules == RulesQuarantine.ALL:
-                if next_persons[y][x].quarantine == Quarantine.NO:
-                    next_persons[y][x].quarantine = Quarantine.QUARANTINE
-                    if next_persons[y][x].quarantine_count == 0:
-                        next_persons[y][x].quarantine_count = 10
+                self.set_count(next_persons[y][x], Quarantine.NO, Quarantine.QUARANTINE, 10)
 
             if self.isolation_rules == RulesIsolation.SICK or \
                             self.isolation_rules == RulesIsolation.SICK_INFECTIOUS or \
                             self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS or \
                             self.isolation_rules == RulesIsolation.ALL:
-                if next_persons[y][x].quarantine != Quarantine.TOTAL_ISOLATION:
-                    next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
-                    if next_persons[y][x].quarantine_count == 0:
-                        next_persons[y][x].quarantine_count = 10
+                self.set_count(next_persons[y][x], Quarantine.TOTAL_ISOLATION, Quarantine.TOTAL_ISOLATION, 10)
 
             if self.quarantine_rules == RulesQuarantine.SICK_INFECTIOUS_NEIGHBORS:
                 for dy in range(-radius, radius + 1):
@@ -166,10 +148,7 @@ class GroupOfPeople:
                         if not (dy == 0 and dx == 0):
                             neighbor = (
                                 next_persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
-                            if neighbor.quarantine == Quarantine.NO:
-                                neighbor.quarantine = Quarantine.QUARANTINE
-                                if neighbor.quarantine_count == 0:
-                                    neighbor.quarantine_count = 10
+                            self.set_count(neighbor, Quarantine.NO, Quarantine.QUARANTINE, 10)
 
             if self.isolation_rules == RulesIsolation.SICK_INFECTIOUS_NEIGHBORS:
                 for dy in range(-radius, radius + 1):
@@ -177,10 +156,7 @@ class GroupOfPeople:
                         if not (dy == 0 and dx == 0):
                             neighbor = (
                                 next_persons[(y + dy) % self.persons.shape[0]][(x + dx) % self.persons.shape[1]])
-                            if neighbor.quarantine != Quarantine.TOTAL_ISOLATION:
-                                neighbor.quarantine = Quarantine.TOTAL_ISOLATION
-                                if neighbor.quarantine_count == 0:
-                                    neighbor.quarantine_count = 10
+                            self.set_count(neighbor, Quarantine.TOTAL_ISOLATION, Quarantine.TOTAL_ISOLATION, 10)
 
         if self.quarantine_rules == RulesQuarantine.ALL:
             next_persons[y][x].quarantine = Quarantine.QUARANTINE
@@ -193,6 +169,12 @@ class GroupOfPeople:
                 next_persons[y][x].quarantine_count = 10
 
         return next_persons
+
+    def set_count(self, person, if_type, set_type, count):
+        if person.quarantine != if_type:
+            person.quarantine = set_type
+            if person.quarantine_count == 0:
+                person.quarantine_count = count
 
     def get_statistics(self):
         dead_people = []
