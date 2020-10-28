@@ -55,6 +55,7 @@ class Person:
                 return self.risk_of_infecting_others
 
     def set_death_ratio(self):
+        # TODO remove these comments, but make sure it is written in the report first
         # background_sickness, maybe age, lifestyle (smoking, weight), health care (respirator, medicines)
         # https://www.fhi.no/contentassets/8a971e7b0a3c4a06bdbf381ab52e6157/vedlegg/andre-halvar-2020/2020.09.23-ukerapport-uke-38-covid-19.pdf
         # page 24
