@@ -9,23 +9,10 @@ from matplotlib import colors
 
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
 from utils import fitness_function
-
-CHANCE_OF_GETTING_INFECTION = 0.005
+from const import *
 
 
 class GroupOfPeople:
-    # changable (0-1)
-    hygiene = 0
-    mask = 0
-    distancing = 0
-    curfew = 0
-    test_rate = 0
-
-    # non-changable
-    healthcare = 0  # access to medications and respirators
-    # TODO smoking
-    # TODO bmi
-
     persons = []
 
     def __init__(self, x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quarantine_rules,
@@ -44,7 +31,7 @@ class GroupOfPeople:
 
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
-                self.persons[i][j] = Person(chance_of_infection=CHANCE_OF_GETTING_INFECTION)
+                self.persons[i][j] = Person(chance_of_infection=CHANCE_OF_INITIAL_INFECTION)
 
     def update(self):
         next_persons = copy.deepcopy(self.persons)
@@ -64,7 +51,7 @@ class GroupOfPeople:
                                                                                  self.hygiene, self.curfew)
                             if random.uniform(0, 1) <= risk_ratio * vulnerability_ratio:
                                 next_persons[y][x].state = PersonState.INFECTIOUS
-                                break  # I do not think there is a need to through rest of the loop after this condition
+                                break
                         if next_persons[y][x].state == PersonState.INFECTIOUS:
                             break
 
@@ -86,7 +73,6 @@ class GroupOfPeople:
         self.persons = next_persons
 
     def observe(self):
-        # plot population
         foo = np.ndarray(self.persons.shape, dtype=np.int)
         for y in range(self.persons.shape[0]):
             for x in range(self.persons.shape[1]):
