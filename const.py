@@ -12,4 +12,4 @@ GENE_TYPES = {'healthcare', 'hygiene', 'mask', 'distancing', 'curfew', 'test_rat
 
 CHANCE_OF_INITIAL_INFECTION = 0.005
 
-fitness_accuracy = 200
+FITNESS_ACCURACY = 200

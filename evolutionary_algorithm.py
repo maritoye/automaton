@@ -12,7 +12,7 @@ def run_generations(initial_population):
 
 	current_population = initial_population
 
-	for generation in range(const.number_of_generations):
+	for generation in range(const.NUMBER_OF_GENERATIONS):
 		print(f"\nGeneration %g:" % (generation+1))
 		for step in range(100):
 			for i in range(const.POPULATION_SIZE):
@@ -22,7 +22,7 @@ def run_generations(initial_population):
 			current_population[i].get_fitness()
 			current_population.sort(key=lambda gop: gop.fitness, reverse=True)
 
-		for i in range(const.population_size):
+		for i in range(const.POPULATION_SIZE):
 			current_population[i].get_fitness()
 			current_population[i] = current_population[i].get_brief_statistics()
 			print("\nIndividual %i:" % (i+1))
@@ -116,7 +116,7 @@ def mutation(genes):
 
 def set_parent_weights(parents):
 	"""
-	Creates a list with fitness/fitness_accuracy number of instances for each of the parents,
+	Creates a list with fitness/FITNESS_ACCURACY number of instances for each of the parents,
 	for having higher probability of choosing genes of a parent if the parent has high fitness.
 	:param parents: list of dict, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
 	:return: list of int
@@ -125,7 +125,7 @@ def set_parent_weights(parents):
 
 	for i in range(const.NUMBER_OF_PARENTS):
 		fitness = parents[i]['fitness']
-		probability_of_parent = fitness//const.fitness_accuracy
+		probability_of_parent = fitness//const.FITNESS_ACCURACY
 		for j in range(probability_of_parent):
 			parent_weights.append(i)
 
