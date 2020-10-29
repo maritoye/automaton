@@ -13,3 +13,6 @@ GENE_TYPES = {'healthcare', 'hygiene', 'mask', 'distancing', 'curfew', 'test_rat
 CHANCE_OF_INITIAL_INFECTION = 0.005
 
 FITNESS_ACCURACY = 200
+
+QUARANTINE_DURATION = 10
+ISOLATION_DURATION = 10
