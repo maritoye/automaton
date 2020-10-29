@@ -8,9 +8,9 @@ import const
 def main():
 	population = []
 
-	for index in range(const.population_size):
-		population.append(GroupOfPeople(x=const.x,
-										y=const.y,
+	for index in range(const.POPULATION_SIZE):
+		population.append(GroupOfPeople(x=const.X,
+										y=const.Y,
 										healthcare=mutate_parameter(0.5, 0.5),
 										hygiene=mutate_parameter(0.5, 0.5),
 										mask=mutate_parameter(0.5, 0.5),
