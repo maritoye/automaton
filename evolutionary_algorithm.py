@@ -15,13 +15,13 @@ def run_generations(initial_population):
 
 #	all_time_best = {}
 
-	for generation in range(const.number_of_generations):
+	for generation in range(const.NUMBER_OF_GENERATIONS):
 		print(f"\nGeneration %g:" % (generation+1))
 		for step in range(100):
-			for i in range(const.population_size):
+			for i in range(const.POPULATION_SIZE):
 				current_population[i].update()
 
-		for i in range(const.population_size):
+		for i in range(const.POPULATION_SIZE):
 			current_population[i].get_fitness()
 			current_population.sort(key=lambda gop: gop.fitness, reverse=True)
 
@@ -35,7 +35,7 @@ def run_generations(initial_population):
 #		else:
 #			all_time_best = current_population[0]
 
-		for i in range(const.population_size):
+		for i in range(const.POPULATION_SIZE):
 			current_population[i].get_fitness()
 			current_population[i] = current_population[i].get_brief_statistics()
 			print("\nIndividual %i:" % (i+1))
@@ -43,7 +43,7 @@ def run_generations(initial_population):
 			print("Parameters: ")
 			print(current_population[i])
 
-		parents = current_population[:const.number_of_parents]
+		parents = current_population[:const.NUMBER_OF_PARENTS]
 
 		current_population = create_population(parents)
 
@@ -56,7 +56,7 @@ def create_population(parents):
 	"""
 	new_population = []
 
-	for new_offspring in range(const.population_size):
+	for new_offspring in range(const.POPULATION_SIZE):
 		crossover_genes = crossover(parents)
 		offspring_genes = mutation(crossover_genes)
 		offspring = GroupOfPeople(offspring_genes['x'],offspring_genes['y'],offspring_genes['healthcare'],
@@ -78,10 +78,10 @@ def crossover(parents):
 	crossover_genes = {}
 	parent_weights = []
 
-	for i in range(const.number_of_parents):
+	for i in range(const.NUMBER_OF_PARENTS):
 		parent_weights = set_parent_weights(parents)
 
-	for gene in const.gene_types:
+	for gene in const.GENE_TYPES:
 		parent_for_this_gene = parent_weights[random.randint(0,len(parent_weights)-1)]
 		value = parents[parent_for_this_gene][gene]
 		crossover_genes[gene] = value
@@ -95,14 +95,14 @@ def mutation(genes):
 	:param genes:
 	:return:
 	"""
-	mutated_genes = {'x':const.x, 'y':const.y}
+	mutated_genes = {'x':const.X, 'y':const.Y}
 
-	for gene_type in const.gene_types:
+	for gene_type in const.GENE_TYPES:
 
 		if gene_type != 'quarantine_rules' and gene_type != 'isolation_rules':
 			value = genes[gene_type]
-			if random.uniform(0,1) < const.mutation_probability:
-				new_value = random.uniform(value-const.max_mutation,value+const.max_mutation)
+			if random.uniform(0,1) < const.MUTATION_PROBABILITY:
+				new_value = random.uniform(value - const.MAX_MUTATION, value + const.MAX_MUTATION)
 				if new_value > 1:
 					new_value = 1
 				elif new_value < 0:
@@ -112,7 +112,7 @@ def mutation(genes):
 				mutated_genes[gene_type] = value
 		else:
 			value = genes[gene_type].value
-			if random.uniform(0,1) < const.mutation_probability:
+			if random.uniform(0,1) < const.MUTATION_PROBABILITY:
 				new_value = random.randint(value-1,value+1)
 				if new_value > 4:
 					new_value = 4
@@ -133,7 +133,7 @@ def set_parent_weights(parents):
 	"""
 	parent_weights = []
 
-	for i in range(const.number_of_parents):
+	for i in range(const.NUMBER_OF_PARENTS):
 		fitness = parents[i]['fitness']
 		probability_of_parent = fitness//200
 		for j in range(probability_of_parent):
