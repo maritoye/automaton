@@ -12,8 +12,6 @@ def run_generations(initial_population):
 
 	current_population = initial_population
 
-#	all_time_best = {}
-
 	for generation in range(const.number_of_generations):
 		print(f"\nGeneration %g:" % (generation+1))
 		for step in range(100):
@@ -23,16 +21,6 @@ def run_generations(initial_population):
 		for i in range(const.population_size):
 			current_population[i].get_fitness()
 			current_population.sort(key=lambda gop: gop.fitness, reverse=True)
-
-#		if all_time_best:
-#			if all_time_best.get_fitness() < current_population[0].get_fitness():
-#				all_time_best = current_population[0]
-#			else:
-#				current_population.append(all_time_best)
-#				current_population.sort(key=lambda gop: gop.fitness, reverse=True)
-#
-#		else:
-#			all_time_best = current_population[0]
 
 		for i in range(const.population_size):
 			current_population[i].get_fitness()
