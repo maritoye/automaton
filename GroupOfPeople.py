@@ -1,32 +1,16 @@
 import copy
 import random
-
-from Person import Person
-
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import colors
 
+from Person import Person
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
 from utils import fitness_function
-
-CHANCE_OF_GETTING_INFECTION = 0.005
+import const
 
 
 class GroupOfPeople:
-    # changable (0-1)
-    hygiene = 0
-    mask = 0
-    distancing = 0
-    curfew = 0
-    test_rate = 0
-
-    # non-changable
-    healthcare = 0  # access to medications and respirators
-    # TODO smoking
-    # TODO bmi
-
-    persons = []
 
     def __init__(self, x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quarantine_rules,
                  isolation_rules):
@@ -36,15 +20,21 @@ class GroupOfPeople:
         self.distancing = distancing
         self.curfew = curfew
         self.test_rate = test_rate
-        self.persons = np.ndarray((y, x), dtype=np.object)
 
         self.quarantine_rules = quarantine_rules
         self.isolation_rules = isolation_rules
         self.fitness = 0
 
-        for i in range(self.persons.shape[0]):
-            for j in range(self.persons.shape[1]):
-                self.persons[i][j] = Person(chance_of_infection=CHANCE_OF_GETTING_INFECTION)
+        while True:
+            any_infected = False
+            self.persons = np.ndarray((y, x), dtype=np.object)
+            for i in range(self.persons.shape[0]):
+                for j in range(self.persons.shape[1]):
+                    self.persons[i][j] = Person(chance_of_infection=const.CHANCE_OF_INITIAL_INFECTION)
+                    if any_infected is False and self.persons[i][j].state == PersonState.INFECTIOUS:
+                        any_infected = True
+            if any_infected:
+                break
 
     def update(self):
         next_persons = copy.deepcopy(self.persons)
