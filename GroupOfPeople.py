@@ -149,13 +149,9 @@ class GroupOfPeople:
 
         if self.quarantine_rules == RulesQuarantine.ALL:
             next_persons[y][x].quarantine = Quarantine.QUARANTINE
-            if next_persons[y][x].quarantine_count == 0:
-                next_persons[y][x].quarantine_count = const.QUARANTINE_DURATION
 
         if self.isolation_rules == RulesIsolation.ALL:
             next_persons[y][x].quarantine = Quarantine.TOTAL_ISOLATION
-            if next_persons[y][x].quarantine_count == 0:
-                next_persons[y][x].quarantine_count = const.ISOLATION_DURATION
 
         return next_persons
 
