@@ -11,15 +11,13 @@ class Person:
         self.age = utils.set_age()
         self.age_group = utils.get_age_group(self.age)  # TODO We only set this property but we did not use it!
         self.background_sickness = utils.get_background_sickness(self.age)
-        # how big (1 - one ring, 3 - three rings) the ´social ring´ is for current person
         self.exposure_radius = random.randint(1, 3)
         self.follow_protocol = utils.get_adherence(self.age)
         self.smoking = utils.get_smoking(self.age)
         self.bmi = utils.get_obesity(self.age)
         self.quarantine = Quarantine.NO
-        self.gender = Gender.FEMALE if random.uniform(0, 1) < 0.5 else Gender.MALE
         self.quarantine_count = 0
-
+        self.gender = Gender.FEMALE if random.uniform(0, 1) < 0.5 else Gender.MALE
         self.state = PersonState.INFECTIOUS if random.uniform(0, 1) < chance_of_infection else PersonState.HEALTHY
         self.incubation_period = random.randint(2, 14)
         self.recovery_period = random.randint(7, 28)
