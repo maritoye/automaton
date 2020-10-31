@@ -1,6 +1,7 @@
 POPULATION_SIZE = 4
 NUMBER_OF_PARENTS = 2
 NUMBER_OF_GENERATIONS = 2
+TIME_STEPS_GROUPOFPEOPLE = 100
 
 MUTATION_PROBABILITY = 0.7
 MAX_MUTATION = 0.3
@@ -11,3 +12,8 @@ Y = 40
 GENE_TYPES = {'healthcare', 'hygiene', 'mask', 'distancing', 'curfew', 'test_rate', 'quarantine_rules', 'isolation_rules'}
 
 CHANCE_OF_INITIAL_INFECTION = 0.005
+
+FITNESS_ACCURACY = 200
+
+QUARANTINE_DURATION = 10
+ISOLATION_DURATION = 10

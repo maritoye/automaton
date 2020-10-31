@@ -7,33 +7,20 @@ import const
 def run_generations(initial_population):
 	"""
 	Runs numberOfGeneration amount of generations
-	:param initial_population: list of instances of GroupOfPeople
-	:return:
+	:param initial_population: list of instances of GroupOfPeople with length population_size
 	"""
 
 	current_population = initial_population
 
-#	all_time_best = {}
-
 	for generation in range(const.NUMBER_OF_GENERATIONS):
 		print(f"\nGeneration %g:" % (generation+1))
-		for step in range(100):
+		for step in range(const.TIME_STEPS_GROUPOFPEOPLE):
 			for i in range(const.POPULATION_SIZE):
 				current_population[i].update()
 
 		for i in range(const.POPULATION_SIZE):
 			current_population[i].get_fitness()
 			current_population.sort(key=lambda gop: gop.fitness, reverse=True)
-
-#		if all_time_best:
-#			if all_time_best.get_fitness() < current_population[0].get_fitness():
-#				all_time_best = current_population[0]
-#			else:
-#				current_population.append(all_time_best)
-#				current_population.sort(key=lambda gop: gop.fitness, reverse=True)
-#
-#		else:
-#			all_time_best = current_population[0]
 
 		for i in range(const.POPULATION_SIZE):
 			current_population[i].get_fitness()
@@ -50,9 +37,9 @@ def run_generations(initial_population):
 
 def create_population(parents):
 	"""
-
-	:param parents:
-	:return:
+	Creates a new population with population_size amount of offsprings, from parents
+	:param parents: list of dicts, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
+	:return: list of instances of GroupOfPeople with length population_size
 	"""
 	new_population = []
 
@@ -71,15 +58,13 @@ def create_population(parents):
 
 def crossover(parents):
 	"""
-
-	:param parents:
-	:return:
+	Does crossover by choosing genes randomly from the parents, with a probability of each parents gene being chosen
+	given by the parent_weights list
+	:param parents: list of dict, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
+	:return: dict - containing a full set of genes which is a crossover of the parents genes
 	"""
 	crossover_genes = {}
-	parent_weights = []
-
-	for i in range(const.NUMBER_OF_PARENTS):
-		parent_weights = set_parent_weights(parents)
+	parent_weights = set_parent_weights(parents)
 
 	for gene in const.GENE_TYPES:
 		parent_for_this_gene = parent_weights[random.randint(0,len(parent_weights)-1)]
@@ -89,18 +74,19 @@ def crossover(parents):
 	return crossover_genes
 
 
-def mutation(genes):
+def mutation(chromosome):
 	"""
-
-	:param genes:
-	:return:
+	mutates each gene in a set of genes, each with a probability of mutation_probability. If mutation is chosen the gene
+	will mutate a maximum of max_mutation
+	:param genes: dict - one full set of genes
+	:return: dict - one full set of genes
 	"""
 	mutated_genes = {'x':const.X, 'y':const.Y}
 
 	for gene_type in const.GENE_TYPES:
 
 		if gene_type != 'quarantine_rules' and gene_type != 'isolation_rules':
-			value = genes[gene_type]
+			value = chromosome[gene_type]
 			if random.uniform(0,1) < const.MUTATION_PROBABILITY:
 				new_value = random.uniform(value - const.MAX_MUTATION, value + const.MAX_MUTATION)
 				if new_value > 1:
@@ -111,7 +97,7 @@ def mutation(genes):
 			else:
 				mutated_genes[gene_type] = value
 		else:
-			value = genes[gene_type].value
+			value = chromosome[gene_type].value
 			if random.uniform(0,1) < const.MUTATION_PROBABILITY:
 				new_value = random.randint(value-1,value+1)
 				if new_value > 4:
@@ -127,15 +113,16 @@ def mutation(genes):
 
 def set_parent_weights(parents):
 	"""
-
-	:param parents:
-	:return:
+	Creates a list with fitness/FITNESS_ACCURACY number of instances for each of the parents,
+	for having higher probability of choosing genes of a parent if the parent has high fitness.
+	:param parents: list of dict, of length number_of_parents - each dict is the statistics for one instance of GroupOfPoeple
+	:return: list of int
 	"""
 	parent_weights = []
 
 	for i in range(const.NUMBER_OF_PARENTS):
 		fitness = parents[i]['fitness']
-		probability_of_parent = fitness//200
+		probability_of_parent = fitness//const.FITNESS_ACCURACY
 		for j in range(probability_of_parent):
 			parent_weights.append(i)
 
