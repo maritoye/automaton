@@ -32,19 +32,17 @@ class Person:
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
         if self.state not in [PersonState.SICK, PersonState.INFECTIOUS]:
             self.risk_of_infecting_others = 0
-            return self.risk_of_infecting_others
         else:
             if self.quarantine == Quarantine.TOTAL_ISOLATION:
                 self.risk_of_infecting_others = 0
-                return self.risk_of_infecting_others
 
             elif self.quarantine == Quarantine.QUARANTINE:
-                self.risk_of_infecting_others = (1 - self.follow_protocol) * 0.2
-                return self.risk_of_infecting_others
+                self.risk_of_infecting_others = (1 - self.follow_protocol) * 0.1
 
             else:
                 self.risk_of_infecting_others = (1 - ((distancing + mask + hygiene + curfew + self.follow_protocol)/5)) * 0.7
-                return self.risk_of_infecting_others
+
+        return self.risk_of_infecting_others
 
     def set_death_ratio(self):
         """
