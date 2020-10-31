@@ -14,7 +14,7 @@ def run_generations(initial_population):
 
 	for generation in range(const.NUMBER_OF_GENERATIONS):
 		print(f"\nGeneration %g:" % (generation+1))
-		for step in range(100):
+		for step in range(const.TIME_STEPS_GROUPOFPEOPLE):
 			for i in range(const.POPULATION_SIZE):
 				current_population[i].update()
 
@@ -64,10 +64,7 @@ def crossover(parents):
 	:return: dict - containing a full set of genes which is a crossover of the parents genes
 	"""
 	crossover_genes = {}
-	parent_weights = []
-
-	for i in range(const.NUMBER_OF_PARENTS):
-		parent_weights = set_parent_weights(parents)
+	parent_weights = set_parent_weights(parents)
 
 	for gene in const.GENE_TYPES:
 		parent_for_this_gene = parent_weights[random.randint(0,len(parent_weights)-1)]
@@ -77,7 +74,7 @@ def crossover(parents):
 	return crossover_genes
 
 
-def mutation(genes):
+def mutation(chromosome):
 	"""
 	mutates each gene in a set of genes, each with a probability of mutation_probability. If mutation is chosen the gene
 	will mutate a maximum of max_mutation
@@ -89,7 +86,7 @@ def mutation(genes):
 	for gene_type in const.GENE_TYPES:
 
 		if gene_type != 'quarantine_rules' and gene_type != 'isolation_rules':
-			value = genes[gene_type]
+			value = chromosome[gene_type]
 			if random.uniform(0,1) < const.MUTATION_PROBABILITY:
 				new_value = random.uniform(value - const.MAX_MUTATION, value + const.MAX_MUTATION)
 				if new_value > 1:
@@ -100,7 +97,7 @@ def mutation(genes):
 			else:
 				mutated_genes[gene_type] = value
 		else:
-			value = genes[gene_type].value
+			value = chromosome[gene_type].value
 			if random.uniform(0,1) < const.MUTATION_PROBABILITY:
 				new_value = random.randint(value-1,value+1)
 				if new_value > 4:
