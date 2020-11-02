@@ -83,7 +83,7 @@ class GroupOfPeople:
         cmap = colors.ListedColormap(['b', 'w', 'y', 'r', 'g', 'k'])
         plt.imshow(foo, vmin=0, vmax=5, cmap=cmap)
 
-        name = "one_run_images/test" + str(time_step) + ".png"
+        name = "one_run_images/ca_time_step_" + str(time_step) + ".png"
         plt.savefig(name)
         #plt.show()
         plt.close()
