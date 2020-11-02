@@ -7,7 +7,9 @@ import save_data as save
 
 def run_generations(initial_population):
 	"""
-	Runs numberOfGeneration amount of generations
+	Runs NUMBER_OF_GENERATIONS amount of generations. For each individual in the generation, update
+	TIME_STEP_GROUPOFPEOPLE time steps, then get the fitness. Sorts the individuals by fitness score.
+	Get the brief statistics of all the individuals. Create the next population from the parents.
 	:param initial_population: list of instances of GroupOfPeople with length population_size
 	"""
 	all_individuals = []
@@ -15,28 +17,28 @@ def run_generations(initial_population):
 
 	for generation in range(const.NUMBER_OF_GENERATIONS):
 		print(f"\nGeneration %g:" % (generation+1))
-		for step in range(const.TIME_STEPS_GROUPOFPEOPLE):
-			for i in range(const.POPULATION_SIZE):
+
+		for i in range(const.POPULATION_SIZE):
+			for step in range(const.TIME_STEPS_GROUPOFPEOPLE):
 				current_population[i].update()
-
-		for i in range(const.POPULATION_SIZE):
 			current_population[i].get_fitness()
-			current_population.sort(key=lambda gop: gop.fitness, reverse=True)
 
+		current_population.sort(key=lambda gop: gop.fitness, reverse=True)
+
+		current_population_statistics = []
 		for i in range(const.POPULATION_SIZE):
-			current_population[i].get_fitness()
-			current_population[i] = current_population[i].get_brief_statistics()
+			current_population_statistics.append(current_population[i].get_brief_statistics())
 			print("\nIndividual %i:" % (i+1))
-			print(f"Fitness: %f" % (current_population[i]['fitness']))
+			print(f"Fitness: %f" % (current_population_statistics[i]['fitness']))
 			print("Parameters: ")
-			print(current_population[i])
+			print(current_population_statistics[i])
 
-		all_individuals.append(current_population)
-		parents = current_population[:const.NUMBER_OF_PARENTS]
-
+		all_individuals.append(current_population_statistics)
+		parents = current_population_statistics[:const.NUMBER_OF_PARENTS]
 		current_population = create_population(parents)
 
 	save.save_run(all_individuals, const.RUN_DATA)
+	#creat_graph(all_individuals)
 
 
 
