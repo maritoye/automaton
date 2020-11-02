@@ -15,7 +15,9 @@ def run_generations(initial_population):
 	all_individuals = []
 	current_population = initial_population
 
+	data = {}
 	for generation in range(const.NUMBER_OF_GENERATIONS):
+		data['generation' + str(generation + 1)] = []
 		print(f"\nGeneration %g:" % (generation+1))
 
 		for i in range(const.POPULATION_SIZE):
@@ -28,6 +30,7 @@ def run_generations(initial_population):
 		current_population_statistics = []
 		for i in range(const.POPULATION_SIZE):
 			current_population_statistics.append(current_population[i].get_brief_statistics())
+			data['generation' + str(generation + 1)].append(current_population[i].get_brief_statistics2())
 			print("\nIndividual %i:" % (i+1))
 			print(f"Fitness: %f" % (current_population_statistics[i]['fitness']))
 			print("Parameters: ")
@@ -38,6 +41,7 @@ def run_generations(initial_population):
 		current_population = create_population(parents)
 
 	save.save_run(all_individuals, const.RUN_DATA)
+	save.write_to_json(data)
 	#creat_graph(all_individuals)
 
 

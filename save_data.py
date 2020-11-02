@@ -1,4 +1,5 @@
 import const
+import json
 
 
 def save_run(all_list, run_data):
@@ -19,6 +20,13 @@ def save_run(all_list, run_data):
 			current+=1
 		current=0
 
-
 	new_file.close()
+
+
+def write_to_json(data):
+	json_object = json.dumps(data, indent = 4)
+	with open('data.json', 'w') as outfile:
+		outfile.write(json_object)
+		outfile.close()
+	print('done')
 
