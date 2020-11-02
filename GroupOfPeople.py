@@ -221,6 +221,43 @@ class GroupOfPeople:
             'isolation_rules': self.isolation_rules,
         }
 
+    def get_brief_statistics2(self):
+
+        healthy_people = 0
+        infectious_people = 0
+        sick_people = 0
+        recovered_people = 0
+        dead_people = 0
+
+        for i in range(self.persons.shape[0]):
+            for j in range(self.persons.shape[1]):
+                if self.persons[i, j].state == PersonState.HEALTHY:
+                    healthy_people += 1
+                elif self.persons[i, j].state == PersonState.INFECTIOUS:
+                    infectious_people += 1
+                elif self.persons[i, j].state == PersonState.SICK:
+                    sick_people += 1
+                elif self.persons[i, j].state == PersonState.RECOVERED:
+                    recovered_people += 1
+                elif self.persons[i, j].state == PersonState.DEATH:
+                    dead_people += 1
+        return {
+            'fitness': int(self.fitness),
+            'healthy': healthy_people,
+            'infectious': infectious_people,
+            'sick': sick_people,
+            'recovered': recovered_people,
+            'dead': dead_people,
+            'healthcare': self.healthcare,
+            'hygiene': self.hygiene,
+            'mask': self.mask,
+            'distancing': self.distancing,
+            'curfew': self.curfew,
+            'test_rate': self.test_rate,
+            'quarantine_rules': self.quarantine_rules.value,
+            'isolation_rules': self.isolation_rules.value,
+        }
+
     def get_fitness(self):
         self.fitness = fitness_function(self.get_brief_statistics())
         return self.fitness
