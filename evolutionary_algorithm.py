@@ -2,6 +2,7 @@ from GroupOfPeople import GroupOfPeople
 from Types import RulesQuarantine
 import random
 import const
+import save_data as save
 
 
 def run_generations(initial_population):
@@ -9,7 +10,7 @@ def run_generations(initial_population):
 	Runs numberOfGeneration amount of generations
 	:param initial_population: list of instances of GroupOfPeople with length population_size
 	"""
-
+	all_individuals = []
 	current_population = initial_population
 
 	for generation in range(const.NUMBER_OF_GENERATIONS):
@@ -30,9 +31,13 @@ def run_generations(initial_population):
 			print("Parameters: ")
 			print(current_population[i])
 
+		all_individuals.append(current_population)
 		parents = current_population[:const.NUMBER_OF_PARENTS]
 
 		current_population = create_population(parents)
+
+	save.save_run(all_individuals, const.RUN_DATA)
+
 
 
 def create_population(parents):
