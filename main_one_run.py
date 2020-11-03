@@ -3,8 +3,8 @@ from Types import RulesIsolation, RulesQuarantine
 import generate_graphs
 import const
 
-X = 50
-Y = 50
+X = 500
+Y = 500
 HEALTHCARE = 0.5
 HYGIENE = 0.5
 MASK = 0.5
@@ -24,7 +24,7 @@ firstPopulation = GroupOfPeople(x=X, y=Y, healthcare=HEALTHCARE, hygiene=HYGIENE
                                 curfew=CURFEW, test_rate=TEST_RATE, quarantine_rules=QUARANTINE_RULES,
                                 isolation_rules=ISOLATION_RULES)
 
-for step in range(50):
+for step in range(601):
     firstPopulation.update()
     stats = firstPopulation.get_brief_statistics()
     healthy.append(stats["healthy"])
@@ -33,10 +33,11 @@ for step in range(50):
     dead.append(stats["dead"])
     recovered.append(stats["recovered"])
 
-    if step == 0 or step % 10 == 0:
+    if step == 0 or step % 25 == 0:
         print(step)
         firstPopulation.observe(step)
         print(firstPopulation.get_brief_statistics())
+        generate_graphs.graph(healthy, infectious, sick, dead, recovered)
 
 info = "Parameters: "
 stats = firstPopulation.get_brief_statistics()
