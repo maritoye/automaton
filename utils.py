@@ -1,6 +1,7 @@
 import random
 import pandas as pd
 from Types import *
+import const
 
 df = pd.read_csv('population2020.csv')
 age_array = df.values
@@ -174,7 +175,26 @@ def fitness_function(brief_statistic):
            brief_statistic[
                'recovered'] * 2 + brief_statistic['dead'] * 1
 
-    #TODO: give higher variables a cost, also cost for higher quarantine avd isolation values
+def fitness_function_with_cost(brief_statistic, healthcare, hygiene, mask, distancing, curfew, test_rate,
+                               quarantine_rules, isolation_rules):
+        """
+        Gets the score for based of the statistic we get from each run
+        Higher value shows parameters are good
+        ----------
+        Parameters:
+            brief_statistic - dictionary{key(state of each person):value(number of person in that state)}
+        ----------
+        Return:
+            int - score
+        """
+        state_scores = brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + \
+               brief_statistic['recovered'] * 2 + brief_statistic['dead'] * 1
+
+        size = const.X * const.Y
+        costs = (((healthcare + hygiene + mask + distancing + curfew + test_rate)/6) + ((isolation_rules.value + quarantine_rules.value)/16)) * (size/2)
+
+        fitness = state_scores - costs
+        return fitness
 
 
 def mutate_parameter(value, variation):

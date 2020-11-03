@@ -5,13 +5,12 @@ import numpy as np
 
 def graph(healthy, infectious, sick, dead, recovered):
 	"""
-	creates a graph of the states of all Persons in a population
-	:param healthy: list - numbers of healthy Persons per timestep
-	:param infectious: list - numbers of infectious Persons per timestep
-	:param sick: list - numbers of sick Persons per timestep
-	:param dead: list - numbers of dead Persons per timestep
-	:param recovered: list - numbers of recovered Persons per timestep
-	:return:
+	Creates a graph of the states of all Persons in a population
+	:param healthy: list - numbers of healthy Persons per time step
+	:param infectious: list - numbers of infectious Persons per time step
+	:param sick: list - numbers of sick Persons per time step
+	:param dead: list - numbers of dead Persons per time step
+	:param recovered: list - numbers of recovered Persons per time step
 	"""
 	x = [i for i in range(len(healthy))]
 
@@ -28,7 +27,7 @@ def graph(healthy, infectious, sick, dead, recovered):
 
 	plt.savefig("one_run_images/graph.png")
 
-	plt.show()
+	#plt.show()
 	plt.close()
 
 
