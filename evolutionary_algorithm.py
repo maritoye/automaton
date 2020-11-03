@@ -3,6 +3,7 @@ from Types import RulesQuarantine
 import random
 import const
 import save_data as save
+import main_one_run
 
 
 def run_generations(initial_population):
@@ -42,7 +43,11 @@ def run_generations(initial_population):
 
 	save.save_run(all_individuals, const.RUN_DATA)
 	save.write_to_json(data)
-	#creat_graph(all_individuals)
+
+	main_one_run.one_run(const.X, const.Y, parents[0]["healthcare"],parents[0]["hygiene"],parents[0]["mask"],
+						 parents[0]["distancing"],parents[0]["curfew"],parents[0]["test_rate"],
+						 parents[0]["quarantine_rules"],parents[0]["isolation_rules"])
+
 
 
 
@@ -89,7 +94,7 @@ def mutation(chromosome):
 	"""
 	mutates each gene in a set of genes, each with a probability of mutation_probability. If mutation is chosen the gene
 	will mutate a maximum of max_mutation
-	:param genes: dict - one full set of genes
+	:param chromosome: dict - one full set of genes
 	:return: dict - one full set of genes
 	"""
 	mutated_genes = {'x':const.X, 'y':const.Y}
