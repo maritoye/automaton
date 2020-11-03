@@ -38,39 +38,6 @@ def read_from_json(datafile):
 	return json_object
 
 
-"""
-for b in a:
-	print(a[b])
-	for c in a[b]:
-		print(c)
-		for d in c:
-			print(str(d) + ': ' + str(c[d]))
-			#print(c[d])
-"""
-
-
-"""
-for generation in data:
-	print(generation)
-	for i, individual in enumerate(data[generation]):
-		print('nr: ' + str(i + 1) + str(individual))
-		for feature in individual:
-			print(feature + ': ' + str(individual[feature]))
-		healthy = individual['healthy']
-		infectious = individual['infectious']
-		sick = individual['sick']
-		recovered = individual['recovered']
-		dead = individual['dead']
-		x = ['healthy', 'infectious', 'sick', 'recovered', 'dead']
-		y = [healthy, infectious, sick, recovered, dead]
-		plt.bar(x, y)
-		plt.xlabel('state')
-		plt.ylabel('number in state')
-		plt.title(str(generation) + '-individual' + str(i + 1))
-		plt.show()
-"""
-
-
 def plot_each_generation(dict_data):
 	for generation in dict_data:
 		healthy = []
@@ -119,7 +86,6 @@ def plot_fitness_all_generations(dict_data):
 			fitness_all[i].append(individual['fitness'])
 			if j + 1 == const.NUMBER_OF_PARENTS:
 				break
-		#print(fitness_all)
 
 	for i in range(const.NUMBER_OF_GENERATIONS):
 		print(fitness_all[i])
@@ -130,25 +96,14 @@ def plot_fitness_all_generations(dict_data):
 
 	for i in range(const.NUMBER_OF_PARENTS):
 		print(fitness_all[i])
-		plt.bar(ind - width + width * i, fitness_all[i], width)  # , label=fitness_all[i][j])
-
-
-	#for i in range(const.NUMBER_OF_GENERATIONS):
-	#	for j in range(const.NUMBER_OF_PARENTS):
-	#		plt.bar(ind - width + width * j, fitness_all[j][i], width)#, label=fitness_all[i][j])
-		#plt.bar(ind - width * 1.5, healthy, width, label='healthy')
-		#plt.bar(ind - width / 2, infectious, width, label='infectious')
-		#plt.bar(ind + width / 2, sick, width, label='sick')
-		#plt.bar(ind + width * 1.5, recovered, width, label='recovered')
-		#plt.bar(ind + width * 2.5, dead, width, label='dead')
+		plt.bar(ind - width + width * i, fitness_all[i], width, label='fitness: ' + str(i + 1))
 
 	plt.xlabel('Generation')
 	plt.ylabel('Fitness')
-	plt.title('Best fitness for all generations')
-
+	plt.title(str(const.NUMBER_OF_PARENTS) + 'best fitness for all generations')
 	label = [str(i + 1) for i in range(const.NUMBER_OF_GENERATIONS)]
 	plt.xticks(ind + width / 2, label)
-	#plt.legend(loc='best')
+	plt.legend(loc='best')
 	plt.show()
 
 
