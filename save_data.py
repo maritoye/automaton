@@ -26,6 +26,10 @@ def save_run(all_list, run_data):
 
 
 def write_to_json(data):
+	"""
+	Writes the result data to .json file
+	:param data: the dictionary to write to file
+	"""
 	json_object = json.dumps(data, indent = 4)
 	with open('data.json', 'w') as outfile:
 		outfile.write(json_object)
@@ -33,12 +37,22 @@ def write_to_json(data):
 
 
 def read_from_json(datafile):
+	"""
+	Reads the result data from .json file
+	:param datafile: the file to be read from  
+	"""
 	with open(datafile, 'r') as openfile:
 		json_object = json.load(openfile)
 	return json_object
 
 
 def plot_each_generation(dict_data):
+	"""
+	Plots one bar graph for all generations
+	Plots the number of healthy, infectious, sick, recovered and dead
+	Plots for only the 'parents'
+	:param dict_data: the data in a dictionary
+	"""
 	for generation in dict_data:
 		healthy = []
 		infectious = []
@@ -75,6 +89,10 @@ def plot_each_generation(dict_data):
 
 
 def plot_fitness_all_generations(dict_data):
+	"""
+	Plots the fitness for the N best fitnesses for each generation, for all generations
+	:param dict_data: the data in a dictionary
+	"""
 	fitness_all = []
 	ind = np.arange(const.NUMBER_OF_GENERATIONS)
 	width = 0.15
