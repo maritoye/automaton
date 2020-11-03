@@ -75,14 +75,18 @@ class GroupOfPeople:
 
         self.persons = next_persons
 
-    def observe(self):
+    def observe(self,time_step):
         foo = np.ndarray(self.persons.shape, dtype=np.int)
         for y in range(self.persons.shape[0]):
             for x in range(self.persons.shape[1]):
                 foo[y][x] = self.persons[y][x].state.value
         cmap = colors.ListedColormap(['b', 'w', 'y', 'r', 'g', 'k'])
         plt.imshow(foo, vmin=0, vmax=5, cmap=cmap)
-        plt.show()
+
+        name = "one_run_images/ca_time_step_" + str(time_step) + ".png"
+        plt.savefig(name)
+        #plt.show()
+        plt.close()
 
     def set_quarantine_isolation(self, x, y, radius, next_persons):
         if next_persons[y][x].quarantine_count > 0:
