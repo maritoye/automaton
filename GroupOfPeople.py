@@ -7,6 +7,7 @@ from matplotlib import colors
 from Person import Person
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
 from utils import fitness_function
+from utils import fitness_function_with_cost
 import const
 
 
@@ -185,7 +186,10 @@ class GroupOfPeople:
         return dps
 
     def get_brief_statistics(self):
-
+        """
+        Adds up amount of people in each state, and returns the statistics.
+        :return: dict - fitness, states, and variables for the GroupOfPeople
+        """
         healthy_people = 0
         infectious_people = 0
         sick_people = 0
@@ -258,6 +262,8 @@ class GroupOfPeople:
             'isolation_rules': self.isolation_rules.value,
         }
 
+
     def get_fitness(self):
-        self.fitness = fitness_function(self.get_brief_statistics())
+        self.fitness = fitness_function_with_cost(self.get_brief_statistics(), self.healthcare, self.hygiene, self.mask,
+                                        self.distancing, self.curfew, self.test_rate, self.quarantine_rules, self.isolation_rules)
         return self.fitness
