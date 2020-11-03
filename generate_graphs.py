@@ -13,11 +13,11 @@ def graph(healthy, infectious, sick, dead, recovered):
 	"""
 	x = [i for i in range(len(healthy))]
 
-	plt.plot(x, healthy, label="Healthy", color="gray")
+	plt.plot(x, healthy, color="gray", label="Healthy")
 	plt.plot(x, infectious, color="yellow", label="Infectious")
 	plt.plot(x, sick, color="red", label="Sick")
-	plt.plot(x, dead, color="black", label="Dead")
 	plt.plot(x, recovered, color="green", label="Recovered")
+	plt.plot(x, dead, color="black", label="Dead")
 
 	plt.xlabel('Time steps')
 	plt.ylabel('People')
