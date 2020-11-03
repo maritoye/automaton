@@ -1,4 +1,6 @@
 from GroupOfPeople import GroupOfPeople
+from generate_graphs import plot_fitness_all_generations
+from save_data import read_from_json
 from utils import mutate_parameter, mutate_quarantine_isolation
 from Types import RulesQuarantine, RulesIsolation
 from evolutionary_algorithm import run_generations
@@ -21,6 +23,9 @@ def main():
 										isolation_rules=RulesIsolation(mutate_quarantine_isolation(2, 2))))
 
 	run_generations(initial_population=population)
+	dict_data = read_from_json('data.json')
+	plot_fitness_all_generations(dict_data)
+
 
 if __name__ == '__main__':
 	main()
