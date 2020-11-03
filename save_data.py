@@ -17,16 +17,28 @@ def save_run(all_list, run_data):
 	for gen in range(const.NUMBER_OF_GENERATIONS):
 		for individual in range(const.POPULATION_SIZE):
 			new_file.writelines(str(all_list[gen][current]) + '\n')
-			current+=1
-		current=0
+			current += 1
+		current = 0
 
 	new_file.close()
 
 
 def write_to_json(data):
+	"""
+	Writes the result data to .json file
+	:param data: the dictionary to write to file
+	"""
 	json_object = json.dumps(data, indent = 4)
 	with open('data.json', 'w') as outfile:
 		outfile.write(json_object)
 		outfile.close()
-	print('done')
 
+
+def read_from_json(datafile):
+	"""
+	Reads the result data from .json file
+	:param datafile: the file to be read from
+	"""
+	with open(datafile, 'r') as openfile:
+		json_object = json.load(openfile)
+	return json_object
