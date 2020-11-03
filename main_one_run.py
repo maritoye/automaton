@@ -3,14 +3,14 @@ from Types import RulesIsolation, RulesQuarantine
 import generate_graphs
 import const
 
-X = 100
-Y = 100
-HEALTHCARE = 0.6
+X = 50
+Y = 50
+HEALTHCARE = 0.5
 HYGIENE = 0.5
-MASK = 0.7
-DISTANCING = 0.5
-CURFEW = 0.5
-TEST_RATE = 0.5
+MASK = 0.5
+DISTANCING = 0.6
+CURFEW = 0.7
+TEST_RATE = 0.55
 QUARANTINE_RULES = RulesQuarantine.SICK_INFECTIOUS
 ISOLATION_RULES = RulesIsolation.SICK_INFECTIOUS
 
