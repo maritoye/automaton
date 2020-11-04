@@ -40,6 +40,7 @@ def run_generations(initial_population):
 		all_individuals.append(current_population_statistics)
 		parents = current_population_statistics[:const.NUMBER_OF_PARENTS]
 		current_population = create_population(parents)
+		save.write_to_json(data)
 
 	save.save_run(all_individuals, const.RUN_DATA)
 	save.write_to_json(data)

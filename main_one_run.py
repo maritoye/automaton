@@ -26,7 +26,7 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
                                     curfew=curfew, test_rate=test_rate, quarantine_rules=quarantine_rules,
                                     isolation_rules=isolation_rules)
 
-    for step in range(251):
+    for step in range(151):
         firstPopulation.update()
         stats = firstPopulation.get_brief_statistics()
         healthy.append(stats["healthy"])

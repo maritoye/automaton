@@ -167,6 +167,10 @@ class GroupOfPeople:
                 person.quarantine_count = count
 
     def get_statistics(self):
+        """
+
+        :return:
+        """
         dead_people = []
         for i in range(self.persons.shape[0]):
             for j in range(self.persons.shape[1]):
@@ -266,4 +270,6 @@ class GroupOfPeople:
     def get_fitness(self):
         self.fitness = fitness_function_with_cost(self.get_brief_statistics(), self.healthcare, self.hygiene, self.mask,
                                         self.distancing, self.curfew, self.test_rate, self.quarantine_rules, self.isolation_rules)
+
+        #self.fitness = fitness_function(self.get_brief_statistics())
         return self.fitness

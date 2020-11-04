@@ -26,10 +26,26 @@ class Person:
         self.death_ratio = self.set_death_ratio()
 
     def get_vulnerability_ratio(self, mask, distancing, hygiene, curfew):
+        """
+        Risk of getting infected by an infected neighbor.
+        :param mask: float 0-1
+        :param distancing: float 0-1
+        :param hygiene: float 0-1
+        :param curfew: float 0-1
+        :return: float 0-1
+        """
         self.risk_of_getting_infected = (1 - ((mask + distancing + hygiene + curfew + self.follow_protocol)/5)) * 0.7
         return self.risk_of_getting_infected
 
     def get_risk_ratio(self, mask, distancing, hygiene, curfew):
+        """
+        Risk of infecting others.
+        :param mask: float 0-1
+        :param distancing: float 0-1
+        :param hygiene: float 0-1
+        :param curfew: float 0-1
+        :return:
+        """
         if self.state not in [PersonState.SICK, PersonState.INFECTIOUS]:
             self.risk_of_infecting_others = 0
         else:
