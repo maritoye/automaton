@@ -78,8 +78,8 @@ def plot_fitness_all_generations(dict_data):
 	Plots the fitness for the N best fitnesses for each generation, for all generations
 	:param dict_data: the data in a dictionary
 	"""
-	#no_of_gens = 33
-	#no_of_parents = 4
+	no_of_gens = 33
+	no_of_parents = 4
 
 	fitness_all = []
 	ind = np.arange(no_of_gens)
