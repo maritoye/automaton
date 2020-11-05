@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 
 from Person import Person
-from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
+from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState
 from utils import fitness_function
 from utils import fitness_function_with_cost
 import const
@@ -86,7 +86,7 @@ class GroupOfPeople:
 
         name = "one_run_images/ca_time_step_" + str(time_step) + ".png"
         plt.savefig(name)
-        #plt.show()
+        plt.show()
         plt.close()
 
     def set_quarantine_isolation(self, x, y, radius, next_persons):
