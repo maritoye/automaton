@@ -39,7 +39,6 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
             print(step)
             firstPopulation.observe(step)
             print(firstPopulation.get_brief_statistics())
-            generate_graphs.graph(healthy, infectious, sick, dead, recovered)
 
     info = "Parameters: "
     stats = firstPopulation.get_brief_statistics()
