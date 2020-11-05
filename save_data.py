@@ -23,13 +23,13 @@ def save_run(all_list, run_data):
 	new_file.close()
 
 
-def write_to_json(data):
+def write_to_json(data, datafile):
 	"""
 	Writes the result data to .json file
 	:param data: the dictionary to write to file
 	"""
 	json_object = json.dumps(data, indent = 4)
-	with open('data.json', 'w') as outfile:
+	with open(datafile, 'w') as outfile:
 		outfile.write(json_object)
 		outfile.close()
 
