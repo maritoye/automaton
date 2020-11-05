@@ -6,7 +6,6 @@ from matplotlib import colors
 
 from Person import Person
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState
-from utils import fitness_function
 from utils import fitness_function_with_cost
 import const
 
@@ -263,7 +262,6 @@ class GroupOfPeople:
             'quarantine_rules': self.quarantine_rules.value,
             'isolation_rules': self.isolation_rules.value,
         }
-
 
     def get_fitness(self):
         self.fitness = fitness_function_with_cost(self.get_brief_statistics(), self.healthcare, self.hygiene, self.mask,
