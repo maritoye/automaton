@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from matplotlib import colors
 
 from Person import Person
-from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState, Gender
+from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState
 from utils import fitness_function
 from utils import fitness_function_with_cost
 import const
@@ -86,7 +86,7 @@ class GroupOfPeople:
 
         name = "one_run_images/ca_time_step_" + str(time_step) + ".png"
         plt.savefig(name)
-        #plt.show()
+        plt.show()
         plt.close()
 
     def set_quarantine_isolation(self, x, y, radius, next_persons):
@@ -165,25 +165,6 @@ class GroupOfPeople:
             person.quarantine = set_type
             if person.quarantine_count == 0:
                 person.quarantine_count = count
-
-    def get_statistics(self):
-        dead_people = []
-        for i in range(self.persons.shape[0]):
-            for j in range(self.persons.shape[1]):
-                if self.persons[i, j].state == PersonState.DEATH:
-                    dead_people.append(self.persons[i, j])
-        print("Number of deaths= ", len(dead_people))
-        dps = []
-        for dp in dead_people:
-            dps.append({
-                'age': dp.age,
-                'vulnerability_ratio': (1 - dp.risk_of_getting_infected) * dp.follow_protocol,
-                'background_sickness': dp.background_sickness,
-                'smoking': True if dp.smoking else False,
-                'overweight': True if dp.bmi else False,
-                'gender': Gender.MALE if dp.gender == Gender.MALE else Gender.FEMALE
-            })
-        return dps
 
     def get_brief_statistics(self):
         """
@@ -266,4 +247,6 @@ class GroupOfPeople:
     def get_fitness(self):
         self.fitness = fitness_function_with_cost(self.get_brief_statistics(), self.healthcare, self.hygiene, self.mask,
                                         self.distancing, self.curfew, self.test_rate, self.quarantine_rules, self.isolation_rules)
+
+        #self.fitness = fitness_function(self.get_brief_statistics())
         return self.fitness

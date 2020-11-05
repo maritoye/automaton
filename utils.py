@@ -43,6 +43,10 @@ def set_age():
 
 
 def get_age_group(age):
+    """
+    :param age: int - the age of a Person
+    :return: AgeGroup enum - the age group of a Person
+    """
     if age in AgeGroup.INFANT.value:
         return AgeGroup.INFANT
     elif age in AgeGroup.CHILD.value:
@@ -66,12 +70,8 @@ def get_background_sickness(age):
     The probability from background_sickness2019.csv is collected from
         source: https://www.ssb.no/statbank/table/11190/tableViewLayout1/
         date: 29.09.2020
-    ----------
-    Parameters:
-        age - int, the age of a person
-    ----------
-    Return:
-        BackgroundSickness.YES or NO - Enum, if the person should have a background sickness
+    :param age: int - the age of a person
+    :return: BackgroundSickness.YES or NO - Enum, if the person should have a background sickness
     """
     sickness = pd.read_csv('./background_sickness2019.csv').values
     if age in range(0, 16):
@@ -84,14 +84,10 @@ def get_background_sickness(age):
 def get_adherence(age):
     """
     Gets the adherence(following protocols) depending on age
-    source: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#figuresntables
+        source: https://www.eurosurveillance.org/content/10.2807/1560-7917.ES.2020.25.37.2001607#figuresntables
         date: 12.10.2020
-    ----------
-    Parameters:
-        age - int, the age of a person
-    ----------
-    Return:
-        float, the percentage of adherence
+    :param age: age - int, the age of a person
+    :return: float - the percentage of adherence
     """
     if age in range(18, 30):
         return 0.90
@@ -108,14 +104,10 @@ def get_adherence(age):
 def get_smoking(age):
     """
     Gets the smoking depending on age
-    source: https://www.ssb.no/statbank/table/05307/tableViewLayout1/
-    date: 12.10.2020
-    ----------
-    Parameters:
-        age - int, the age of a person
-    ----------
-    Return:
-        int - if the person smokes or not
+        source: https://www.ssb.no/statbank/table/05307/tableViewLayout1/
+        date: 12.10.2020
+    :param age: int - the age of a Person
+    :return: int - 1 or 0, if the person smokes or not
     """
     if age in range(0, 16):
         return 0
@@ -137,8 +129,8 @@ def get_obesity(age):
     """
     Gets the obesity depending on age
     The first value is bmi 30-35, second value bmi > 35
-    source: https://www.ssb.no/statbank/table/06181/tableViewLayout1/
-    date: 12.10.2020
+        source: https://www.ssb.no/statbank/table/06181/tableViewLayout1/
+        date: 12.10.2020
     ----------
     Parameters:
         age - int, the age of a person
@@ -162,42 +154,46 @@ def get_obesity(age):
 
 def fitness_function(brief_statistic):
     """
-    Gets the score for based of the statistic we get from each run
-    Higher value shows parameters are good
-    ----------
-    Parameters:
-        brief_statistic - dictionary{key(state of each person):value(number of person in that state)}
-    ----------
-    Return:
-        int - score
+    Calculates a fitness score based on the states of Persons in a GroupOfPeople.
+    :param brief_statistic: dict - {key(state of each person):value(number of person in that state)}
+    :return: int - the calculated fitness score
     """
+
     return brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + \
-           brief_statistic[
-               'recovered'] * 2 + brief_statistic['dead'] * 1
+           brief_statistic['recovered'] * 2 + brief_statistic['dead'] * 1
+
 
 def fitness_function_with_cost(brief_statistic, healthcare, hygiene, mask, distancing, curfew, test_rate,
                                quarantine_rules, isolation_rules):
-        """
-        Gets the score for based of the statistic we get from each run
-        Higher value shows parameters are good
-        ----------
-        Parameters:
-            brief_statistic - dictionary{key(state of each person):value(number of person in that state)}
-        ----------
-        Return:
-            int - score
-        """
-        state_scores = brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + \
-               brief_statistic['recovered'] * 2 + brief_statistic['dead'] * 1
-
-        size = const.X * const.Y
-        costs = (((healthcare + hygiene + mask + distancing + curfew + test_rate)/6) + ((isolation_rules.value + quarantine_rules.value)/16)) * (size/2)
-
-        fitness = state_scores - costs
-        return fitness
+    """
+    Calculates a fitness score based on the states of Persons in a GroupOfPeople minus a cost of having higher
+    restriction values.
+    :param brief_statistic: dict - {key(state of each person):value(number of person in that state)}
+    :param healthcare: float 0-1
+    :param hygiene: float 0-1
+    :param mask: float 0-1
+    :param distancing: float 0-1
+    :param curfew: float 0-1
+    :param test_rate: float 0-1
+    :param quarantine_rules: int 0-4
+    :param isolation_rules: int 0-4
+    :return: int - the calculated fitness score
+    """
+    state_scores = brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + \
+           brief_statistic['recovered'] * 2 + brief_statistic['dead'] * 1
+    size = const.X * const.Y
+    costs = (((healthcare + hygiene + mask + distancing + curfew + test_rate)/6) + ((isolation_rules.value + quarantine_rules.value)/20)) * (size/4)
+    fitness = state_scores - costs
+    return fitness
 
 
 def mutate_parameter(value, variation):
+    """
+	Mutates a value with a random number between -variation to +variation.
+	:param value: float 0-1
+	:param variation: float 0-1
+	:return: float 0-1 - the mutated parameter
+	"""
     mutated_parameter = random.uniform(value - variation, value + variation)
     if mutated_parameter <= 0:
         return 0
@@ -206,24 +202,13 @@ def mutate_parameter(value, variation):
     return mutated_parameter
 
 
-def mutate_parameter_up(value, variation):
-    mutated_parameter = random.uniform(value, value + variation)
-    if mutated_parameter <= 0:
-        return 0
-    elif mutated_parameter >= 1:
-        return 1
-    return mutated_parameter
-
-
-def mutate_parameter_down(value, variation):
-    mutated_parameter = random.uniform(value - variation, value)
-    if mutated_parameter <= 0:
-        return 0
-    elif mutated_parameter >= 1:
-        return 1
-    return mutated_parameter
-
 def mutate_quarantine_isolation(value, variation):
+    """
+	Mutates a value with a random number between -variation to +variation.
+	:param value: int 0-4
+	:param variation: int 0-4
+	:return: int 0-4 - the mutated parameter
+	"""
     mutated_parameter = random.randint(value - variation, value + variation)
     if mutated_parameter <= 0:
         mutated_parameter = 0
