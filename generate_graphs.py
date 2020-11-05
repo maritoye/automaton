@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import const
 import numpy as np
+from statistics import median
 
 
 def graph(healthy, infectious, sick, dead, recovered):
@@ -73,13 +74,17 @@ def plot_each_generation(dict_data):
 		plt.show()
 
 
-def plot_fitness_all_generations(dict_data):
+def plot_fitness_all_generations(dict_data, no_of_gens=None, no_of_parents=4):
 	"""
-	Plots the fitness for the N best fitnesses for each generation, for all generations
+	Plots and saves the fitness for the N best fitnesses for each generation, for all generations
 	:param dict_data: the data in a dictionary
+	:param no_of_gens: number of generations to be plotted
+	:param no_of_parents: number of individuals to be plotted (usually the parents used)
 	"""
+	if no_of_gens == None:
+		no_of_gens = len(dict_data)
+
 	fitness_all = []
-	ind = np.arange(const.NUMBER_OF_GENERATIONS)
 	width = 0.15
 	y = []
 	for i, generation in enumerate(dict_data):
@@ -87,21 +92,61 @@ def plot_fitness_all_generations(dict_data):
 		fitness_all.append([])
 		for j, individual in enumerate(dict_data[generation]):
 			fitness_all[i].append(individual['fitness'])
-			if j + 1 == const.NUMBER_OF_PARENTS:
+			if j + 1 == no_of_parents:
 				break
+
+	fitness_all = fitness_all[:no_of_gens]
 
 	numpy_array = np.array(fitness_all)
 	transpose = numpy_array.T
 	fitness_all = transpose.tolist()
+	ind = np.arange(no_of_gens)
 
-	for i in range(const.NUMBER_OF_PARENTS):
+	for i in range(no_of_parents):
 		plt.bar(ind - width + width * i, fitness_all[i], width, label='fitness: ' + str(i + 1))
 
 	plt.xlabel('Generation')
 	plt.ylabel('Fitness')
-	plt.title(str(const.NUMBER_OF_PARENTS) + 'best fitness for all generations')
-	label = [str(i + 1) for i in range(const.NUMBER_OF_GENERATIONS)]
+	plt.title(str(no_of_parents) + 'best fitness for all generations')
+	label = [str(i + 1) for i in range(no_of_gens)]
 	plt.xticks(ind + width / 2, label)
 	plt.legend(loc='best')
+	plt.savefig("fitness_bar.png")
 	plt.show()
-	plt.savefig("fitness.png")
+
+
+def plot_line_avg(data, no_of_gens, population_size):
+	"""
+	Plots the highest, lowest and average fitness for each generation
+	:param data: the data in a dictionary
+	:param no_of_gens: number of gens to be plotted
+	:param population_size: the size of the population in each generation
+	"""
+	y = []
+	fitness_min = []
+	fitness_max = []
+	fitness_avg = []
+	fitness_med = []
+	for i, generation in enumerate(data):
+		y.append(i)
+		fitness_min.append(data[generation][population_size - 1]['fitness'])
+		fitness_max.append(data[generation][0]['fitness'])
+		fitness_tot = 0
+		total = []
+		for j, individual in enumerate(data[generation]):
+			fitness_tot += individual['fitness']
+			total.append(individual['fitness'])
+		fitness_avg.append(sum(total) / len(total))
+		fitness_med.append(median(total))
+		if i == no_of_gens:
+			break
+	plt.plot(y, fitness_max, label='fitness max', linestyle='--', color='indianred')
+	plt.plot(y, fitness_min, label='fitness min', linestyle='--', color='red')
+	plt.plot(y, fitness_avg, label='fitness avgerage', color='darkred')
+	plt.plot(y, fitness_med, label='fitness median')
+	plt.xlabel('Generation')
+	plt.ylabel('Fitness')
+	plt.title('Highest, lowest, average and median fitness for ' + str(no_of_gens) + ' generations')
+	plt.legend(loc='best')
+	plt.savefig("fitness_line.png")
+	plt.show()
