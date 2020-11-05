@@ -3,17 +3,17 @@ from Types import RulesIsolation, RulesQuarantine
 import generate_graphs
 import const
 
-X = 50
-Y = 50
-HEALTHCARE = 0.5
-HYGIENE = 0.5
-MASK = 0.5
-DISTANCING = 0.6
-CURFEW = 0.7
-TEST_RATE = 0.55
+X = 100
+Y = 100
+HEALTHCARE = 0.3809509817497183
+HYGIENE = 0.9655131652167935
+MASK = 1
+DISTANCING = 0.7884598250050401
+CURFEW = 1
+TEST_RATE = 0.9380235823448189
 QUARANTINE_RULES = RulesQuarantine.SICK_INFECTIOUS
-ISOLATION_RULES = RulesIsolation.SICK_INFECTIOUS
-NO_OF_STEPS = 151
+ISOLATION_RULES = RulesIsolation.SICK_INFECTIOUS_NEIGHBORS
+NO_OF_STEPS = 1000
 
 
 def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quarantine_rules, isolation_rules):
@@ -24,7 +24,7 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
     :param x: int size of GroupOfPeople x-direction
     :param y: int size of GroupOfPeople y-direction
     :param healthcare: float the healthcare value float between 0 and 1
-    :param hygiene: float the hygiene value float between 0 and 1 
+    :param hygiene: float the hygiene value float between 0 and 1
     :param mask: float the mask value float between 0 and 1
     :param distancing: float the distancing value float between 0 and 1
     :param curfew: float the curfew value float between 0 and 1
@@ -43,7 +43,6 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
                                     isolation_rules=isolation_rules)
 
     for step in range(NO_OF_STEPS):
-        firstPopulation.update()
         stats = firstPopulation.get_brief_statistics()
         healthy.append(stats["healthy"])
         infectious.append(stats["infectious"])
@@ -51,17 +50,18 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
         dead.append(stats["dead"])
         recovered.append(stats["recovered"])
 
-        if step == 0 or step % 50 == 0:
+        if step == 0 or step % 25 == 0:
             print(step)
+            generate_graphs.graph(healthy, infectious, sick, dead, recovered, step)
             firstPopulation.observe(step)
             print(firstPopulation.get_brief_statistics())
-
+        firstPopulation.update()
     info = "Parameters: "
     stats = firstPopulation.get_brief_statistics()
     for gene in const.GENE_TYPES:
         info += (gene + ": "+ str(stats[gene]) + ", ")
 
-    generate_graphs.graph(healthy, infectious, sick, dead, recovered)
+    generate_graphs.graph(healthy, infectious, sick, dead, recovered, NO_OF_STEPS)
 
 
 if __name__ == '__main__':
