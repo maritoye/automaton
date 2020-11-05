@@ -166,29 +166,6 @@ class GroupOfPeople:
             if person.quarantine_count == 0:
                 person.quarantine_count = count
 
-    def get_statistics(self):
-        """
-
-        :return:
-        """
-        dead_people = []
-        for i in range(self.persons.shape[0]):
-            for j in range(self.persons.shape[1]):
-                if self.persons[i, j].state == PersonState.DEATH:
-                    dead_people.append(self.persons[i, j])
-        print("Number of deaths= ", len(dead_people))
-        dps = []
-        for dp in dead_people:
-            dps.append({
-                'age': dp.age,
-                'vulnerability_ratio': (1 - dp.risk_of_getting_infected) * dp.follow_protocol,
-                'background_sickness': dp.background_sickness,
-                'smoking': True if dp.smoking else False,
-                'overweight': True if dp.bmi else False,
-                'gender': Gender.MALE if dp.gender == Gender.MALE else Gender.FEMALE
-            })
-        return dps
-
     def get_brief_statistics(self):
         """
         Adds up amount of people in each state, and returns the statistics.
