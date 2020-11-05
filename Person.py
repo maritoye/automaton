@@ -1,5 +1,3 @@
-import pandas as pd
-
 from Types import PersonState, Quarantine, Gender
 import random
 import utils

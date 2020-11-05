@@ -18,11 +18,6 @@ class Gender(Enum):
 class BackgroundSickness(Enum):
     NO = 0
     YES = 1
-    # SLIGHTLY_INCREASED = 1,
-    # MODERATE = 2,
-    # ABOVE_AVERAGE = 3,
-    # HIGH = 4,
-    # FATAL = 1
 
 
 class FollowProtocol(Enum):

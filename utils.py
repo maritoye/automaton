@@ -189,11 +189,11 @@ def fitness_function_with_cost(brief_statistic, healthcare, hygiene, mask, dista
 
 def mutate_parameter(value, variation):
     """
-	Mutates a value with a random number between -variation to +variation.
-	:param value: float 0-1
-	:param variation: float 0-1
-	:return: float 0-1 - the mutated parameter
-	"""
+    Mutates a value with a random number between -variation to +variation.
+    :param value: float 0-1
+    :param variation: float 0-1
+    :return: float 0-1 - the mutated parameter
+    """
     mutated_parameter = random.uniform(value - variation, value + variation)
     if mutated_parameter <= 0:
         return 0
@@ -204,16 +204,14 @@ def mutate_parameter(value, variation):
 
 def mutate_quarantine_isolation(value, variation):
     """
-	Mutates a value with a random number between -variation to +variation.
-	:param value: int 0-4
-	:param variation: int 0-4
-	:return: int 0-4 - the mutated parameter
-	"""
+    Mutates a value with a random number between -variation to +variation.
+    :param value: int 0-4
+    :param variation: int 0-4
+    :return: int 0-4 - the mutated parameter
+    """
     mutated_parameter = random.randint(value - variation, value + variation)
     if mutated_parameter <= 0:
         mutated_parameter = 0
     elif mutated_parameter >= 4:
         mutated_parameter = 4
     return mutated_parameter
-
-

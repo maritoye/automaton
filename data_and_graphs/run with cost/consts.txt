@@ -1,6 +1,0 @@
-pop size = 12
-parents = 4
-generations = 10
-time step = 100 
-x = 50
-y = 50

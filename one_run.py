@@ -52,7 +52,7 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
 
         if step == 0 or step % 25 == 0:
             print(step)
-            generate_graphs.graph(healthy, infectious, sick, dead, recovered, step)
+            generate_graphs.graph(healthy, infectious, sick, dead, recovered, str(step))
             firstPopulation.observe(step)
             print(firstPopulation.get_brief_statistics())
         firstPopulation.update()
@@ -61,7 +61,7 @@ def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quar
     for gene in const.GENE_TYPES:
         info += (gene + ": "+ str(stats[gene]) + ", ")
 
-    generate_graphs.graph(healthy, infectious, sick, dead, recovered, NO_OF_STEPS)
+    generate_graphs.graph(healthy, infectious, sick, dead, recovered, str(NO_OF_STEPS))
 
 
 if __name__ == '__main__':

@@ -12,6 +12,7 @@ def graph(healthy, infectious, sick, dead, recovered, filename):
 	:param sick: list - numbers of sick Persons per time step
 	:param dead: list - numbers of dead Persons per time step
 	:param recovered: list - numbers of recovered Persons per time step
+	:param filename: string - what number the file should be called
 	"""
 	x = [i for i in range(len(healthy))]
 
@@ -81,7 +82,7 @@ def plot_fitness_all_generations(dict_data, no_of_gens=None, no_of_parents=4):
 	:param no_of_gens: number of generations to be plotted
 	:param no_of_parents: number of individuals to be plotted (usually the parents used)
 	"""
-	if no_of_gens == None:
+	if no_of_gens is None:
 		no_of_gens = len(dict_data)
 
 	fitness_all = []

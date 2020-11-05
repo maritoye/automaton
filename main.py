@@ -5,11 +5,9 @@ from utils import mutate_parameter, mutate_quarantine_isolation
 from Types import RulesQuarantine, RulesIsolation
 from evolutionary_algorithm import run_generations
 import const
-import time
 
 
 def main():
-	t0 = time.time()
 	population = []
 
 	for index in range(const.POPULATION_SIZE):
@@ -27,9 +25,6 @@ def main():
 	run_generations(initial_population=population)
 	dict_data = read_from_json('data.json')
 	plot_fitness_all_generations(dict_data)
-	t1 = time.time()
-	total = t1 - t0
-	print(total)
 
 
 if __name__ == '__main__':
