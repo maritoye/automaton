@@ -38,6 +38,10 @@ class GroupOfPeople:
                 break
 
     def update(self):
+        """
+        Updates the model with one step
+        Includes all the rules for which people to be infected, sick, recover or die
+        """
         next_persons = copy.deepcopy(self.persons)
         for y in range(self.persons.shape[0]):
             for x in range(self.persons.shape[1]):
@@ -76,7 +80,11 @@ class GroupOfPeople:
 
         self.persons = next_persons
 
-    def observe(self,time_step):
+    def observe(self, time_step):
+        """
+        Used for visualizing the grid of Person object states
+        :param time_step: the current time step for the visualization, used for saving png
+        """
         foo = np.ndarray(self.persons.shape, dtype=np.int)
         for y in range(self.persons.shape[0]):
             for x in range(self.persons.shape[1]):
@@ -90,6 +98,9 @@ class GroupOfPeople:
         plt.close()
 
     def set_quarantine_isolation(self, x, y, radius, next_persons):
+        """
+        The rules for setting people in quarantine and isolation
+        """
         if next_persons[y][x].quarantine_count > 0:
             next_persons[y][x].quarantine_count -= 1
         if next_persons[y][x].quarantine_count == 0:
@@ -161,6 +172,13 @@ class GroupOfPeople:
         return next_persons
 
     def set_count(self, person, if_type, set_type, count):
+        """
+        Sets the state count for a Person object
+        :param person: object - the Person object to be updated
+        :param if_type: if the person is not in given type
+        :param set_type: the type the person should be set to
+        :param count: how long the person should be in current state
+        """
         if person.quarantine != if_type:
             person.quarantine = set_type
             if person.quarantine_count == 0:
@@ -206,8 +224,11 @@ class GroupOfPeople:
             'isolation_rules': self.isolation_rules,
         }
 
-    def get_brief_statistics2(self):
-
+    def get_visualization_statistics(self):
+        """
+        Adds up amount of people in each state, and returns the statistics.
+        :return: dict - fitness, states, and variables for visualizing the data
+        """
         healthy_people = 0
         infectious_people = 0
         sick_people = 0

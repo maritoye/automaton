@@ -3,7 +3,7 @@ from Types import RulesQuarantine
 import random
 import const
 import save_data as save
-import main_one_run
+import one_run
 
 
 def run_generations(initial_population):
@@ -31,7 +31,7 @@ def run_generations(initial_population):
 		current_population_statistics = []
 		for i in range(const.POPULATION_SIZE):
 			current_population_statistics.append(current_population[i].get_brief_statistics())
-			data['generation' + str(generation + 1)].append(current_population[i].get_brief_statistics2())
+			data['generation' + str(generation + 1)].append(current_population[i].get_visualization_statistics())
 			print("\nIndividual %i:" % (i+1))
 			print(f"Fitness: %f" % (current_population_statistics[i]['fitness']))
 			print("Parameters: ")
@@ -40,16 +40,13 @@ def run_generations(initial_population):
 		all_individuals.append(current_population_statistics)
 		parents = current_population_statistics[:const.NUMBER_OF_PARENTS]
 		current_population = create_population(parents)
-		save.write_to_json(data)
+		save.write_to_json(data, 'data/generation_' + str(generation + 1) + '.json')
 
-	save.save_run(all_individuals, const.RUN_DATA)
-	save.write_to_json(data)
+	save.write_to_json(data, 'data/all_data.json')
 
-	main_one_run.one_run(const.X, const.Y, parents[0]["healthcare"],parents[0]["hygiene"],parents[0]["mask"],
+	one_run.one_run(const.X, const.Y, parents[0]["healthcare"],parents[0]["hygiene"],parents[0]["mask"],
 						 parents[0]["distancing"],parents[0]["curfew"],parents[0]["test_rate"],
 						 parents[0]["quarantine_rules"],parents[0]["isolation_rules"])
-
-
 
 
 def create_population(parents):

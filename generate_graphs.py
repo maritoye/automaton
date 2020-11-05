@@ -4,7 +4,7 @@ import numpy as np
 from statistics import median
 
 
-def graph(healthy, infectious, sick, dead, recovered):
+def graph(healthy, infectious, sick, dead, recovered, filename):
 	"""
 	Creates a graph of the states of all Persons in a population
 	:param healthy: list - numbers of healthy Persons per time step
@@ -26,7 +26,7 @@ def graph(healthy, infectious, sick, dead, recovered):
 	plt.axis([0, len(x), 0, healthy[0]+infectious[0]])
 	plt.legend()
 
-	plt.savefig("one_run_images/graph.png")
+	plt.savefig("one_run_images/graph_" + str(filename) + '.png')
 
 	plt.show()
 	plt.close()
