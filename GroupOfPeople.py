@@ -7,6 +7,7 @@ from matplotlib import colors
 from Person import Person
 from Types import RulesIsolation, RulesQuarantine, Quarantine, PersonState
 from utils import fitness_function_with_cost
+from utils import fitness_function
 import const
 
 
