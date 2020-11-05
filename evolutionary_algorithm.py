@@ -31,7 +31,7 @@ def run_generations(initial_population):
 		current_population_statistics = []
 		for i in range(const.POPULATION_SIZE):
 			current_population_statistics.append(current_population[i].get_brief_statistics())
-			data['generation' + str(generation + 1)].append(current_population[i].get_brief_statistics2())
+			data['generation' + str(generation + 1)].append(current_population[i].get_visualization_statistics())
 			print("\nIndividual %i:" % (i+1))
 			print(f"Fitness: %f" % (current_population_statistics[i]['fitness']))
 			print("Parameters: ")
