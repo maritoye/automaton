@@ -28,7 +28,7 @@ def graph(healthy, infectious, sick, dead, recovered):
 
 	plt.savefig("one_run_images/graph.png")
 
-	#plt.show()
+	plt.show()
 	plt.close()
 
 
