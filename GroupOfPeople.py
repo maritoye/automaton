@@ -174,7 +174,7 @@ class GroupOfPeople:
     def set_count(self, person, if_type, set_type, count):
         """
         Sets the state count for a Person object
-        :param perosn: object - the Person object to be updated
+        :param person: object - the Person object to be updated
         :param if_type: if the person is not in given type
         :param set_type: the type the person should be set to
         :param count: how long the person should be in current state
