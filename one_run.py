@@ -17,6 +17,21 @@ NO_OF_STEPS = 151
 
 
 def one_run(x, y, healthcare, hygiene, mask, distancing, curfew, test_rate, quarantine_rules, isolation_rules):
+    """
+    Runs the model one time with given values
+    To be used after the evolutionary model is finished to see the final outcome
+    Can also be used alone
+    :param x: int size of GroupOfPeople x-direction
+    :param y: int size of GroupOfPeople y-direction
+    :param healthcare: float the healthcare value float between 0 and 1
+    :param hygiene: float the hygiene value float between 0 and 1 
+    :param mask: float the mask value float between 0 and 1
+    :param distancing: float the distancing value float between 0 and 1
+    :param curfew: float the curfew value float between 0 and 1
+    :param test_rate: float the test_rate value float between 0 and 1
+    :param quarantine_rules: enum for what quarantine rules to be set
+    :param isolation_rules: enum for what isolation rules to be set
+    """
     healthy = []
     infectious = []
     sick = []
