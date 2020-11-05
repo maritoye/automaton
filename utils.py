@@ -162,6 +162,7 @@ def fitness_function(brief_statistic):
     return brief_statistic['healthy'] * 5 + brief_statistic['infectious'] * 4 + brief_statistic['sick'] * 3 + \
            brief_statistic['recovered'] * 2 + brief_statistic['dead'] * 1
 
+
 def fitness_function_with_cost(brief_statistic, healthcare, hygiene, mask, distancing, curfew, test_rate,
                                quarantine_rules, isolation_rules):
     """
@@ -187,6 +188,12 @@ def fitness_function_with_cost(brief_statistic, healthcare, hygiene, mask, dista
 
 
 def mutate_parameter(value, variation):
+    """
+	Mutates a value with a random number between -variation to +variation.
+	:param value: float 0-1
+	:param variation: float 0-1
+	:return: float 0-1 - the mutated parameter
+	"""
     mutated_parameter = random.uniform(value - variation, value + variation)
     if mutated_parameter <= 0:
         return 0
@@ -195,24 +202,13 @@ def mutate_parameter(value, variation):
     return mutated_parameter
 
 
-def mutate_parameter_up(value, variation):
-    mutated_parameter = random.uniform(value, value + variation)
-    if mutated_parameter <= 0:
-        return 0
-    elif mutated_parameter >= 1:
-        return 1
-    return mutated_parameter
-
-
-def mutate_parameter_down(value, variation):
-    mutated_parameter = random.uniform(value - variation, value)
-    if mutated_parameter <= 0:
-        return 0
-    elif mutated_parameter >= 1:
-        return 1
-    return mutated_parameter
-
 def mutate_quarantine_isolation(value, variation):
+    """
+	Mutates a value with a random number between -variation to +variation.
+	:param value: int 0-4
+	:param variation: int 0-4
+	:return: int 0-4 - the mutated parameter
+	"""
     mutated_parameter = random.randint(value - variation, value + variation)
     if mutated_parameter <= 0:
         mutated_parameter = 0
